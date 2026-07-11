@@ -1,0 +1,21 @@
+# macOS System files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode / Swift build folders
+build/
+DerivedData/
+.build/
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+
+# Local Package caches
+.swiftpm/
+
+# Vercel / Netlify local states
+.vercel/
+.netlify/

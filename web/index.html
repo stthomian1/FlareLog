@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlareLog — POTS Journal & Pattern Finder</title>
+    <meta name="description" content="Personal wellness tracking journal for POTS patients. Observe statistical symptom correlations safely.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js and jsPDF CDNs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+    <!-- APP CONTAINER -->
+    <div id="app-container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-logo">
+                <span class="logo-icon">▲</span>
+                <span class="logo-text">FLARELOG</span>
+            </div>
+            <div class="premium-badge" id="premium-badge">FREE TIER</div>
+        </header>
+
+        <!-- MAIN VIEW CONTENT -->
+        <main>
+            <!-- 1. DASHBOARD VIEW -->
+            <section id="view-dashboard" class="app-view active">
+                <div class="view-header">
+                    <h2>Symptom Journal</h2>
+                    <p class="view-subtitle">Track wellness, observe patterns.</p>
+                </div>
+
+                <!-- Quick Action Button -->
+                <div class="quick-action-card" id="btn-goto-log">
+                    <div class="action-info">
+                        <h3>Log Symptoms & Habits</h3>
+                        <p>Record today's status in under 60 seconds</p>
+                    </div>
+                    <div class="action-icon">+</div>
+                </div>
+
+                <!-- Stats Widget -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-icon teal-tint">📅</span>
+                        <div class="stat-info">
+                            <span class="stat-val" id="stat-days">0</span>
+                            <span class="stat-label">Logging Days</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon cyan-tint">🧠</span>
+                        <div class="stat-info">
+                            <span class="stat-val" id="stat-lighthead">0.0</span>
+                            <span class="stat-label">Avg Lighthead</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon blue-tint">💧</span>
+                        <div class="stat-info">
+                            <span class="stat-val" id="stat-hydration">0.0L</span>
+                            <span class="stat-label">Avg Hydration</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Header -->
+                <div class="section-title-row">
+                    <h3>Journal History</h3>
+                </div>
+
+                <!-- Log List -->
+                <div id="logs-list-container">
+                    <!-- Dynamic logs cards go here -->
+                </div>
+            </section>
+
+            <!-- 2. LOG ENTRY VIEW -->
+            <section id="view-log" class="app-view">
+                <div class="view-header-row">
+                    <h2>New Journal Entry</h2>
+                    <button class="btn-hk-sync" id="btn-hk-sync">
+                        <span class="hk-icon">❤️</span> Sync HealthKit
+                    </button>
+                </div>
+
+                <!-- Sync Indicator -->
+                <div id="hk-sync-banner" class="hk-sync-banner hidden">
+                    <div class="banner-content">
+                        <strong>Passive HealthKit Data Synced:</strong>
+                        <span id="hk-synced-metrics">Steps, HR, HRV loaded.</span>
+                    </div>
+                </div>
+
+                <form id="log-form">
+                    <!-- Date Picker -->
+                    <div class="form-group-row">
+                        <label for="log-date">Journal Date</label>
+                        <input type="date" id="log-date" required>
+                    </div>
+
+                    <!-- Symptoms Card -->
+                    <div class="form-card">
+                        <h3>Symptom Severity (0 to 10)</h3>
+                        
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="input-lightheadedness">Lightheadedness</label>
+                                <span class="slider-badge" id="val-lightheadedness">0/10</span>
+                            </div>
+                            <input type="range" id="input-lightheadedness" min="0" max="10" value="0" class="range-slider">
+                        </div>
+
+                        <div class="stepper-group">
+                            <label for="input-tachy-count">Tachycardia Episodes</label>
+                            <div class="stepper-control">
+                                <button type="button" class="btn-step" data-id="input-tachy-count" data-val="-1">-</button>
+                                <input type="number" id="input-tachy-count" min="0" value="0" readonly>
+                                <button type="button" class="btn-step" data-id="input-tachy-count" data-val="1">+</button>
+                            </div>
+                        </div>
+
+                        <div class="slider-group hidden" id="group-tachy-sev">
+                            <div class="slider-header">
+                                <label for="input-tachy-severity">Tachycardia Severity</label>
+                                <span class="slider-badge" id="val-tachy-severity">0/10</span>
+                            </div>
+                            <input type="range" id="input-tachy-severity" min="0" max="10" value="0" class="range-slider">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="input-fatigue">Fatigue</label>
+                                <span class="slider-badge" id="val-fatigue">0/10</span>
+                            </div>
+                            <input type="range" id="input-fatigue" min="0" max="10" value="0" class="range-slider">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="input-brainfog">Brain Fog</label>
+                                <span class="slider-badge" id="val-brainfog">0/10</span>
+                            </div>
+                            <input type="range" id="input-brainfog" min="0" max="10" value="0" class="range-slider">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="input-nausea">Nausea</label>
+                                <span class="slider-badge" id="val-nausea">0/10</span>
+                            </div>
+                            <input type="range" id="input-nausea" min="0" max="10" value="0" class="range-slider">
+                        </div>
+
+                        <div class="toggle-group">
+                            <label for="input-syncope">Syncope / Near-Syncope</label>
+                            <label class="switch">
+                                <input type="checkbox" id="input-syncope">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="stepper-group hidden" id="group-syncope-count">
+                            <label for="input-syncope-count">Syncope Episodes</label>
+                            <div class="stepper-control">
+                                <button type="button" class="btn-step" data-id="input-syncope-count" data-val="-1">-</button>
+                                <input type="number" id="input-syncope-count" min="1" value="1" readonly>
+                                <button type="button" class="btn-step" data-id="input-syncope-count" data-val="1">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Habits Card -->
+                    <div class="form-card">
+                        <h3>Daily Habits & Triggers</h3>
+
+                        <div class="stepper-group">
+                            <label for="input-sleep">Sleep Duration</label>
+                            <div class="stepper-control">
+                                <button type="button" class="btn-step" data-id="input-sleep" data-val="-0.5">-</button>
+                                <input type="number" id="input-sleep" min="0" max="24" step="0.5" value="7.0" readonly>
+                                <span class="step-unit">hrs</span>
+                                <button type="button" class="btn-step" data-id="input-sleep" data-val="0.5">+</button>
+                            </div>
+                        </div>
+
+                        <div class="stepper-group">
+                            <label for="input-hydration">Hydration</label>
+                            <div class="stepper-control">
+                                <button type="button" class="btn-step" data-id="input-hydration" data-val="-0.25">-</button>
+                                <input type="number" id="input-hydration" min="0" max="10" step="0.25" value="1.5" readonly>
+                                <span class="step-unit">L</span>
+                                <button type="button" class="btn-step" data-id="input-hydration" data-val="0.25">+</button>
+                            </div>
+                        </div>
+
+                        <div class="stepper-group">
+                            <label for="input-standing">Total Standing Time</label>
+                            <div class="stepper-control">
+                                <button type="button" class="btn-step" data-id="input-standing" data-val="-5">-</button>
+                                <input type="number" id="input-standing" min="0" step="5" value="20" readonly>
+                                <span class="step-unit">min</span>
+                                <button type="button" class="btn-step" data-id="input-standing" data-val="5">+</button>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <label for="input-medication">Medication Taken On-Time</label>
+                            <label class="switch">
+                                <input type="checkbox" id="input-medication" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="select-group">
+                            <label for="input-activity">Activity Level</label>
+                            <select id="input-activity">
+                                <option value="rest">Rest</option>
+                                <option value="light" selected>Light</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="vigorous">Vigorous</option>
+                            </select>
+                        </div>
+
+                        <div class="toggle-group">
+                            <label for="input-menstrual-enable">Track Menstrual Cycle Day</label>
+                            <label class="switch">
+                                <input type="checkbox" id="input-menstrual-enable">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="stepper-group hidden" id="group-menstrual-day">
+                            <label for="input-menstrual-day">Cycle Day</label>
+                            <div class="stepper-control">
+                                <button type="button" class="btn-step" data-id="input-menstrual-day" data-val="-1">-</button>
+                                <input type="number" id="input-menstrual-day" min="1" max="40" value="1" readonly>
+                                <button type="button" class="btn-step" data-id="input-menstrual-day" data-val="1">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-field-group">
+                            <label for="input-pressure">Barometric Pressure</label>
+                            <div class="input-unit-wrapper">
+                                <input type="number" id="input-pressure" placeholder="1013">
+                                <span class="field-unit">hPa</span>
+                            </div>
+                        </div>
+
+                        <div class="input-field-group">
+                            <label for="input-food">Food / Diet Notes</label>
+                            <input type="text" id="input-food" placeholder="Egg salad, salt tablets, etc.">
+                        </div>
+                    </div>
+
+                    <!-- General Notes Card -->
+                    <div class="form-card">
+                        <h3>Journal Notes</h3>
+                        <textarea id="input-notes" placeholder="Describe anything not covered above (e.g. weather changes, stress levels)..." rows="4"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-submit" id="btn-submit-log">Save Journal Entry</button>
+                </form>
+            </section>
+
+            <!-- 3. PATTERNS VIEW -->
+            <section id="view-patterns" class="app-view">
+                <!-- Data Gate Banner (logs < 14) -->
+                <div id="patterns-threshold-gate" class="threshold-gate">
+                    <h3>Gathering Tracking History</h3>
+                    <div class="progress-circle-wrapper">
+                        <svg class="progress-circle-svg" viewBox="0 0 100 100">
+                            <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                            <circle id="progress-circle-bar" class="circle-bar" cx="50" cy="50" r="40"></circle>
+                        </svg>
+                        <div class="progress-text">
+                            <span id="progress-count">0</span>
+                            <span class="progress-max">of 14 days</span>
+                        </div>
+                    </div>
+                    <p class="gate-desc">Patterns can be shown after 14 days of data.</p>
+                    <p class="gate-subtext">FlareLog uses a rigorous multiple-comparisons correction to adjust statistical significance thresholds, preventing misleading correlations before enough data is collected.</p>
+                </div>
+
+                <!-- Paywall Lock (premium locked) -->
+                <div id="patterns-paywall-gate" class="paywall-gate hidden">
+                    <span class="lock-icon">🔒</span>
+                    <h3>Unlock Pattern Analysis</h3>
+                    <p class="gate-desc">Surface statistical associations between your sleep, hydration, activity, and symptoms using our Benjamini-Hochberg corrected correlation engine.</p>
+                    <div class="premium-benefits">
+                        <div>✓ Identify symptom patterns and habits</div>
+                        <div>✓ Verify with robust FDR statistics</div>
+                        <div>✓ Export locally-generated PDF reports</div>
+                    </div>
+                    <button class="btn-paywall-upgrade" id="btn-paywall-upgrade-plans">View Subscription Plans</button>
+                </div>
+
+                <!-- Patterns Core View (logs >= 14 & premium active) -->
+                <div id="patterns-premium-content" class="patterns-content hidden">
+                    <div class="view-header-row">
+                        <div>
+                            <span class="pre-title">STATISTICAL ANALYSIS</span>
+                            <h2>Symptom Patterns</h2>
+                        </div>
+                        <button class="btn-pdf-export" id="btn-pdf-export">
+                            <span class="pdf-icon">📄</span> Export PDF
+                        </button>
+                    </div>
+
+                    <h3>Observed Correlations</h3>
+                    <div id="patterns-list-container" class="patterns-list">
+                        <!-- Dynamic pattern items go here -->
+                    </div>
+
+                    <!-- Chart Details Card -->
+                    <div id="chart-details-card" class="chart-card hidden">
+                        <h4 id="chart-title">Visualizing sleep duration vs lightheadedness</h4>
+                        <div class="chart-container">
+                            <canvas id="correlation-chart"></canvas>
+                        </div>
+                        <p class="chart-desc">Each point represents one log entry. This visual chart demonstrates the statistical distribution of the two variables.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. SETTINGS VIEW -->
+            <section id="view-settings" class="app-view">
+                <div class="view-header">
+                    <h2>Settings</h2>
+                </div>
+
+                <div class="settings-list">
+                    <!-- Subscription Setting -->
+                    <div class="settings-section">
+                        <h4>Subscription</h4>
+                        <div class="settings-row">
+                            <div class="row-info">
+                                <strong id="settings-premium-status">FlareLog Free</strong>
+                                <p id="settings-premium-desc">Correlation engine is locked.</p>
+                            </div>
+                            <button class="btn-upgrade-action" id="settings-btn-upgrade">Upgrade</button>
+                        </div>
+                    </div>
+
+                    <!-- HealthKit settings -->
+                    <div class="settings-section">
+                        <h4>HealthKit passive tracking</h4>
+                        <div class="settings-row">
+                            <div class="row-info">
+                                <strong>Health Data Access</strong>
+                                <p id="settings-hk-status">Not connected</p>
+                            </div>
+                            <button class="btn-hk-connect" id="settings-btn-hk-connect">Connect</button>
+                        </div>
+                    </div>
+
+                    <!-- Legal Notice -->
+                    <div class="settings-section">
+                        <h4>Legal & Regulatory</h4>
+                        <div class="settings-row link-row" id="btn-show-disclaimer">
+                            <strong>View Medical Disclaimer</strong>
+                            <span class="chevron">›</span>
+                        </div>
+                        <div class="settings-card info-card">
+                            <strong>Scope Limitation Notice</strong>
+                            <p>FlareLog is an observational wellness tracking journal. It does not diagnose, treat, or manage POTS or any other chronic condition. It does not issue clinical directives, recommend activity limits, or make medication alterations. Use strictly as personal tracking reference.</p>
+                        </div>
+                    </div>
+
+                    <!-- Developer Tools -->
+                    <div class="settings-section dev-section">
+                        <h4>Developer Tools</h4>
+                        <div class="settings-row">
+                            <div class="row-info">
+                                <strong>Simulate Premium Access</strong>
+                                <p>Toggle paywall locks on or off</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="dev-premium-toggle">
+                                <span class="switch-slider orange-switch"></span>
+                            </label>
+                        </div>
+                        <div class="settings-row flex-col-row">
+                            <button class="btn-dev-action" id="dev-btn-generate-logs">
+                                Generate 20 Days of Synthetic Logs
+                            </button>
+                            <p class="dev-note">Seeds 20 daily logs containing planted correlations (e.g. low sleep hours correlates with high lightheadedness) to test stats and charts immediately.</p>
+                        </div>
+                        <div class="settings-row flex-col-row">
+                            <button class="btn-dev-action danger" id="dev-btn-clear-logs">
+                                Reset Local Logs
+                            </button>
+                            <p class="dev-note">Deletes all entries in localStorage to restore default empty states.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER NAV BAR -->
+        <footer>
+            <button class="nav-tab active" data-view="view-dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Dashboard</span>
+            </button>
+            <button class="nav-tab" data-view="view-patterns">
+                <span class="nav-icon">📈</span>
+                <span class="nav-label">Patterns</span>
+            </button>
+            <button class="nav-tab" data-view="view-settings">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Settings</span>
+            </button>
+        </footer>
+    </div>
+
+    <!-- 1. MANDATORY MEDICAL DISCLAIMER BLOCKER MODAL -->
+    <div id="disclaimer-modal" class="modal-overlay">
+        <div class="modal-card">
+            <span class="modal-logo-icon">🛡️</span>
+            <h2>Medical Disclaimer</h2>
+            <div class="modal-body scrollable">
+                <p><strong>Please read this disclaimer carefully before using FlareLog.</strong></p>
+                <hr>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">▲ Not a Medical Device</strong>
+                    <p>FlareLog is a personal wellness tracking journal. It is not a diagnostic tool, does not suggest medication changes or treatment plans, does not recommend activity limits, and is not a medical device.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">▲ Personal Reference Only</strong>
+                    <p>All content, statistics, and observations generated in this app are derived mathematically from data you enter. They are for informational purposes only, to help you identify statistical patterns in your own journal records.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">▲ Consult Your Doctor</strong>
+                    <p>This app is not a substitute for clinical advice. You should always discuss your symptoms, logs, and any statistical findings with a qualified physician or doctor. Never disregard or delay seeking medical help due to information tracked in this app.</p>
+                </div>
+            </div>
+            <button class="btn-accept-disclaimer" id="btn-accept-disclaimer">I Understand & Agree</button>
+        </div>
+    </div>
+
+    <!-- 2. SUBSCRIPTION PAYWALL MODAL -->
+    <div id="paywall-modal" class="modal-overlay hidden">
+        <div class="modal-card premium-card">
+            <button class="btn-close-modal" id="btn-close-paywall">×</button>
+            <span class="modal-logo-icon gold">👑</span>
+            <h2>FlareLog Premium</h2>
+            <p class="premium-tagline">Unlock the full statistical power of your logs.</p>
+            
+            <div class="premium-features-list">
+                <div class="benefit-item">
+                    <span class="benefit-icon">📈</span>
+                    <div>
+                        <strong>FDR Pattern Analysis</strong>
+                        <p>Reveal true statistical correlations between your triggers and symptoms, filtered against false discoveries.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">∞</span>
+                    <div>
+                        <strong>Unlimited Log History</strong>
+                        <p>Keep records of your symptoms and habits beyond the 30-day free tier restriction.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">📄</span>
+                    <div>
+                        <strong>PDF Reports for Doctors</strong>
+                        <p>Compile and export complete logs plus surfaced patterns to PDF to print or share at doctor visits.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="paywall-plan">
+                <strong>Monthly Access</strong>
+                <span class="plan-price">$6.99 / month</span>
+                <p class="plan-note">Auto-renews. Cancel anytime in App Store settings.</p>
+            </div>
+
+            <button class="btn-subscribe" id="btn-subscribe">Subscribe Now</button>
+            <button class="btn-restore" id="btn-restore">Restore Purchases</button>
+        </div>
+    </div>
+
+    <!-- Application Script Reference -->
+    <script src="statistics.js"></script>
+    <script src="pdf-generator.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
