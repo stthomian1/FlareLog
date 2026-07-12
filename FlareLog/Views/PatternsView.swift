@@ -13,6 +13,7 @@ public struct PatternsView: View {
     // PDF Export states
     @State private var pdfURL: URL? = nil
     @State private var showShareSheet: Bool = false
+    @State private var showStatsHelp: Bool = false
     @State private var isGeneratingPDF: Bool = false
     
     public init() {}
@@ -80,10 +81,18 @@ public struct PatternsView: View {
                         
                         // Main Patterns List
                         VStack(alignment: .leading, spacing: 12) {
-                            Text("Observed Correlations")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 16)
+                            HStack {
+                                Text("Observed Correlations")
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Button(action: { showStatsHelp = true }) {
+                                    Label("Explain Math", systemImage: "info.circle")
+                                        .font(.system(size: 13, weight: .semibold))
+                                        .foregroundColor(.teal)
+                                }
+                            }
+                            .padding(.horizontal, 16)
                             
                             let significant = patterns.filter { $0.isSignificant }
                             
@@ -121,10 +130,7 @@ public struct PatternsView: View {
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 6) {
-                                    Text("💡 Reading your patterns:")
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(.white.opacity(0.85))
-                                    Text("• Pattern Strength shows as a percentage how closely a habit and symptom follow each other. Only statistically verified patterns are shown here.")
+                                    Text("💡 Need help reading the math? Click the **Explain Math** button at the top to see how we verify correlations.")
                                         .font(.system(size: 11))
                                         .foregroundColor(.white.opacity(0.6))
                                 }
@@ -192,6 +198,9 @@ public struct PatternsView: View {
             if let url = pdfURL {
                 ShareSheet(activityItems: [url])
             }
+        }
+        .sheet(isPresented: $showStatsHelp) {
+            StatsHelpView()
         }
     }
     
@@ -367,10 +376,11 @@ struct PatternCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack(spacing: 16) {
-                    Text("Pattern Strength: \(Int(round(abs(pattern.r) * 100)))%")
+                    Text("Pearson r: \(String(format: "%.2f", pattern.r))")
+                    Text("p-value: \(String(format: "%.3f", pattern.adjustedPValue))")
                     Text("Logged: \(pattern.sampleSize) days")
                 }
-                .font(.system(size: 11, weight: .semibold))
+                .font(.system(size: 10, design: .monospaced))
                 .foregroundColor(.white.opacity(0.45))
             }
             .padding(.all, 14)
@@ -382,6 +392,100 @@ struct PatternCard: View {
             )
         }
         .buttonStyle(.plain)
+    }
+}
+
+struct StatsHelpView: View {
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Color(red: 0.06, green: 0.09, blue: 0.16)
+                    .ignoresSafeArea()
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text("Correlation & Significance Math")
+                            .font(.system(size: 20, weight: .bold, design: .rounded))
+                            .foregroundColor(.teal)
+                            .padding(.bottom, 5)
+                        
+                        // Pearson Correlation Explainer
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Pearson Correlation (r)")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.white)
+                            
+                            Text("This measures how much two things change together in a straight line.")
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.85))
+                                .lineSpacing(4)
+                            
+                            Divider()
+                                .background(Color.white.opacity(0.1))
+                            
+                            Text("**The Setup**: Imagine tracking how much coffee you drink (X) against how bad your headache is (Y).")
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.85))
+                                .lineSpacing(4)
+                            
+                            Text("**The Result**: It gives you a number between -1 and 1.\n• **1** means as X goes up, Y goes up perfectly (more coffee, worse headache).\n• **-1** means as X goes up, Y goes down perfectly (more coffee, less headache).\n• **0** means there is no straight-line connection at all.")
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.85))
+                                .lineSpacing(4)
+                        }
+                        .padding(14)
+                        .background(Color.white.opacity(0.03))
+                        .cornerRadius(12)
+                        
+                        // Student's t Explainer
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Student's t Significance Test")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.white)
+                            
+                            Text("This determines if the connection found by the Pearson Correlation is a real pattern or just a random coincidence.")
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.85))
+                                .lineSpacing(4)
+                            
+                            Divider()
+                                .background(Color.white.opacity(0.1))
+                            
+                            Text("**The Setup**: It calculates a p-value, which is the probability that your results happened by pure luck.")
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.85))
+                                .lineSpacing(4)
+                            
+                            Text("**The Math**: To get this value quickly, the formula uses a specific curve (a two-tailed t-distribution) and relies on standard mathematical shortcuts (Wallace and error function approximations) to skip doing heavy, infinite calculus.")
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.85))
+                                .lineSpacing(4)
+                            
+                            Text("**The Result**: A low p-value (typically below 0.05) proves the relationship is statistically significant, meaning the trigger and the symptom are genuinely linked.")
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.85))
+                                .lineSpacing(4)
+                        }
+                        .padding(14)
+                        .background(Color.white.opacity(0.03))
+                        .cornerRadius(12)
+                    }
+                    .padding(16)
+                }
+            }
+            .navigationTitle("Math Explainer")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Close") {
+                        dismiss()
+                    }
+                    .foregroundColor(.teal)
+                    .font(.system(size: 15, weight: .bold))
+                }
+            }
+        }
     }
 }
 

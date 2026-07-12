@@ -107,9 +107,7 @@
                 doc.setFontSize(7.5);
                 doc.setTextColor(100, 116, 139);
                 
-                const strengthPct = Math.round(Math.abs(pattern.r) * 100);
-                
-                doc.text(`Pattern Strength: ${strengthPct}%  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
+                doc.text(`Pearson r: ${pattern.r.toFixed(2)}  p-value: ${pattern.adjustedPValue.toFixed(3)}  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
                 
                 currentY += cardHeight + 8; // Leave a space of 8pt between cards
             }

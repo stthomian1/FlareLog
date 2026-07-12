@@ -321,14 +321,16 @@
                         </button>
                     </div>
 
-                    <h3>Observed Correlations</h3>
+                    <div class="flex-row-between" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <h3>Observed Correlations</h3>
+                        <button type="button" class="btn-help-trigger" id="btn-explain-stats" style="background:none; border:none; color:var(--color-teal, #20b2aa); font-size:0.85rem; font-weight:bold; cursor:pointer; padding: 0;">Explain Math</button>
+                    </div>
                     <div id="patterns-list-container" class="patterns-list">
                         <!-- Dynamic pattern items go here -->
                     </div>
 
                     <div class="info-card" style="margin-top: 15px; font-size: 11px; line-height: 1.4; opacity: 0.85;">
-                        <p><strong>💡 Reading your patterns:</strong></p>
-                        <p style="margin: 4px 0;">• <strong>Pattern Strength:</strong> Shows as a percentage how closely your habits and symptoms follow each other. Only statistically verified patterns are shown here.</p>
+                        <p>💡 Need help reading the math? Click the <strong>Explain Math</strong> button at the top to see how we verify correlations.</p>
                     </div>
 
                     <!-- Chart Details Card -->
@@ -520,6 +522,36 @@
                 <div class="disclaimer-bullet">
                     <strong class="warning-text">Period Cycle Day</strong>
                     <p>Hormone drops during your period can trigger POTS flares. Log which day of your cycle you're on to spot links.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. STATS HELP MODAL -->
+    <div id="stats-help-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button class="btn-close-modal" id="btn-close-stats-help">×</button>
+            <span class="modal-logo-icon">📊</span>
+            <h2>Math & Stats Explainer</h2>
+            <div class="modal-body scrollable">
+                <div class="disclaimer-bullet" style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 8px;">
+                    <strong class="warning-text" style="color: #fff; font-size: 1rem;">Pearson Correlation (<i>r</i>)</strong>
+                    <p style="margin: 6px 0 0 0; font-size: 0.85rem;">This measures how much two things change together in a straight line.</p>
+                    <p style="margin: 4px 0 0 0; font-size: 0.85rem;"><strong>The Setup:</strong> Imagine tracking how much coffee you drink (<i>X</i>) against how bad your headache is (<i>Y</i>).</p>
+                    <p style="margin: 4px 0 0 0; font-size: 0.85rem;"><strong>The Result:</strong> It gives you a number between -1 and 1.</p>
+                    <ul style="margin: 4px 0 0 0; padding-left: 15px; font-size: 0.85rem; color: #bbb;">
+                        <li><strong>1</strong> means as <i>X</i> goes up, <i>Y</i> goes up perfectly (more coffee, worse headache).</li>
+                        <li><strong>-1</strong> means as <i>X</i> goes up, <i>Y</i> goes down perfectly (more coffee, less headache).</li>
+                        <li><strong>0</strong> means there is no straight-line connection at all.</li>
+                    </ul>
+                </div>
+                
+                <div class="disclaimer-bullet" style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 8px; margin-top: 15px;">
+                    <strong class="warning-text" style="color: #fff; font-size: 1rem;">Student's <i>t</i> Significance Test</strong>
+                    <p style="margin: 6px 0 0 0; font-size: 0.85rem;">This determines if the connection found by the Pearson Correlation is a real pattern or just a random coincidence.</p>
+                    <p style="margin: 4px 0 0 0; font-size: 0.85rem;"><strong>The Setup:</strong> It calculates a p-value, which is the probability that your results happened by pure luck.</p>
+                    <p style="margin: 4px 0 0 0; font-size: 0.85rem;"><strong>The Math:</strong> To get this value quickly, the formula uses a specific curve (a two-tailed <i>t</i>-distribution) and relies on standard mathematical shortcuts (Wallace and error function approximations) to skip doing heavy, infinite calculus.</p>
+                    <p style="margin: 4px 0 0 0; font-size: 0.85rem;"><strong>The Result:</strong> A low p-value (typically below 0.05) proves the relationship is statistically significant, meaning the trigger and the symptom are genuinely linked.</p>
                 </div>
             </div>
         </div>

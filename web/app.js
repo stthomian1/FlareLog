@@ -94,6 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const helpModal = document.getElementById("help-modal");
     const btnCloseHelp = document.getElementById("btn-close-help");
     const settingsBtnShowHelp = document.getElementById("settings-btn-show-help");
+    const statsHelpModal = document.getElementById("stats-help-modal");
+    const btnCloseStatsHelp = document.getElementById("btn-close-stats-help");
+    const btnExplainStats = document.getElementById("btn-explain-stats");
 
     // Developer settings
     const devPremiumToggle = document.getElementById("dev-premium-toggle");
@@ -133,12 +136,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     document.querySelectorAll(".btn-help-trigger").forEach(btn => {
+        if (btn.id === "btn-explain-stats") return; // Skip specific stats explainer button
         btn.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
             helpModal.classList.remove("hidden");
         });
     });
+
+    if (btnCloseStatsHelp) {
+        btnCloseStatsHelp.addEventListener("click", () => {
+            statsHelpModal.classList.add("hidden");
+        });
+    }
+
+    if (btnExplainStats) {
+        btnExplainStats.addEventListener("click", () => {
+            statsHelpModal.classList.remove("hidden");
+        });
+    }
 
     // --- NAVIGATION LOGIC ---
     function switchView(viewId) {
@@ -684,8 +700,6 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const directionClass = pattern.r > 0 ? "positive" : "negative";
 
-            const strengthPct = Math.round(Math.abs(pattern.r) * 100);
-
             card.innerHTML = `
                 <div class="pattern-card-header">
                     <span class="pattern-indicator ${directionClass}"></span>
@@ -693,7 +707,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <p class="pattern-desc">${pattern.observationalSentence}</p>
                 <div class="pattern-stats-row">
-                    <span>Pattern Strength: ${strengthPct}%</span>
+                    <span>Pearson r: ${pattern.r.toFixed(2)}</span>
+                    <span>p-value: ${pattern.adjustedPValue.toFixed(3)}</span>
                     <span>Logged: ${pattern.sampleSize} days</span>
                 </div>
             `;
