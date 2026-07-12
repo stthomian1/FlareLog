@@ -124,7 +124,7 @@ public struct PatternsView: View {
                                     Text("💡 Reading your patterns:")
                                         .font(.system(size: 12, weight: .bold))
                                         .foregroundColor(.white.opacity(0.85))
-                                    Text("• Strength shows as a percentage how closely a habit and symptom follow each other. Only statistically verified patterns are shown here.")
+                                    Text("• Pattern Strength shows as a percentage how closely a habit and symptom follow each other. Only statistically verified patterns are shown here.")
                                         .font(.system(size: 11))
                                         .foregroundColor(.white.opacity(0.6))
                                 }
@@ -367,7 +367,7 @@ struct PatternCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack(spacing: 16) {
-                    Text("Strength: \(Int(round(abs(pattern.r) * 100)))%")
+                    Text("Pattern Strength: \(Int(round(abs(pattern.r) * 100)))%")
                     Text("Logged: \(pattern.sampleSize) days")
                 }
                 .font(.system(size: 11, weight: .semibold))

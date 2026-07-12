@@ -109,7 +109,7 @@
                 
                 const strengthPct = Math.round(Math.abs(pattern.r) * 100);
                 
-                doc.text(`Strength: ${strengthPct}%  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
+                doc.text(`Pattern Strength: ${strengthPct}%  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
                 
                 currentY += cardHeight + 8; // Leave a space of 8pt between cards
             }

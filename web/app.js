@@ -693,7 +693,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <p class="pattern-desc">${pattern.observationalSentence}</p>
                 <div class="pattern-stats-row">
-                    <span>Strength: ${strengthPct}%</span>
+                    <span>Pattern Strength: ${strengthPct}%</span>
                     <span>Logged: ${pattern.sampleSize} days</span>
                 </div>
             `;
