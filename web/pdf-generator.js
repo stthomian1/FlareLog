@@ -107,11 +107,9 @@
                 doc.setFontSize(7.5);
                 doc.setTextColor(100, 116, 139);
                 
-                const absR = Math.abs(pattern.r);
-                const strength = absR >= 0.6 ? "Strong" : (absR >= 0.3 ? "Moderate" : "Weak");
-                const confidence = pattern.adjustedPValue <= 0.01 ? "High" : (pattern.adjustedPValue <= 0.05 ? "Medium" : "Low");
+                const strengthPct = Math.round(Math.abs(pattern.r) * 100);
                 
-                doc.text(`Strength: ${strength}  Confidence: ${confidence}  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
+                doc.text(`Strength: ${strengthPct}%  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
                 
                 currentY += cardHeight + 8; // Leave a space of 8pt between cards
             }

@@ -684,18 +684,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const directionClass = pattern.r > 0 ? "positive" : "negative";
 
-            function getPatternStrengthText(r) {
-                const absR = Math.abs(r);
-                if (absR >= 0.6) return "Strong";
-                if (absR >= 0.3) return "Moderate";
-                return "Weak";
-            }
-
-            function getPatternConfidenceText(p) {
-                if (p <= 0.01) return "High";
-                if (p <= 0.05) return "Medium";
-                return "Low";
-            }
+            const strengthPct = Math.round(Math.abs(pattern.r) * 100);
 
             card.innerHTML = `
                 <div class="pattern-card-header">
@@ -704,8 +693,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <p class="pattern-desc">${pattern.observationalSentence}</p>
                 <div class="pattern-stats-row">
-                    <span>Strength: ${getPatternStrengthText(pattern.r)}</span>
-                    <span>Confidence: ${getPatternConfidenceText(pattern.adjustedPValue)}</span>
+                    <span>Strength: ${strengthPct}%</span>
                     <span>Logged: ${pattern.sampleSize} days</span>
                 </div>
             `;

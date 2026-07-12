@@ -124,10 +124,7 @@ public struct PatternsView: View {
                                     Text("💡 Reading your patterns:")
                                         .font(.system(size: 12, weight: .bold))
                                         .foregroundColor(.white.opacity(0.85))
-                                    Text("• Strength shows how closely a habit and symptom follow each other.")
-                                        .font(.system(size: 11))
-                                        .foregroundColor(.white.opacity(0.6))
-                                    Text("• Confidence is how sure we are that the pattern is a real connection and not just a random coincidence.")
+                                    Text("• Strength shows as a percentage how closely a habit and symptom follow each other. Only statistically verified patterns are shown here.")
                                         .font(.system(size: 11))
                                         .foregroundColor(.white.opacity(0.6))
                                 }
@@ -343,27 +340,6 @@ struct PatternCard: View {
     let isSelected: Bool
     let action: () -> Void
     
-    private func patternStrengthText(_ r: Double) -> String {
-        let absR = abs(r)
-        if absR >= 0.6 {
-            return "Strong"
-        } else if absR >= 0.3 {
-            return "Moderate"
-        } else {
-            return "Weak"
-        }
-    }
-    
-    private func patternConfidenceText(_ p: Double) -> String {
-        if p <= 0.01 {
-            return "High"
-        } else if p <= 0.05 {
-            return "Medium"
-        } else {
-            return "Low"
-        }
-    }
-    
     var body: some View {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 12) {
@@ -391,11 +367,10 @@ struct PatternCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack(spacing: 16) {
-                    Text("Strength: \(patternStrengthText(pattern.r))")
-                    Text("Confidence: \(patternConfidenceText(pattern.adjustedPValue))")
+                    Text("Strength: \(Int(round(abs(pattern.r) * 100)))%")
                     Text("Logged: \(pattern.sampleSize) days")
                 }
-                .font(.system(size: 10, weight: .semibold))
+                .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(.white.opacity(0.45))
             }
             .padding(.all, 14)
