@@ -119,6 +119,24 @@ public struct PatternsView: View {
                                     }
                                     .padding(.horizontal, 16)
                                 }
+                                
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("💡 Reading your patterns:")
+                                        .font(.system(size: 12, weight: .bold))
+                                        .foregroundColor(.white.opacity(0.85))
+                                    Text("• Strength shows how closely a habit and symptom follow each other.")
+                                        .font(.system(size: 11))
+                                        .foregroundColor(.white.opacity(0.6))
+                                    Text("• Confidence is how sure we are that the pattern is a real connection and not just a random coincidence.")
+                                        .font(.system(size: 11))
+                                        .foregroundColor(.white.opacity(0.6))
+                                }
+                                .padding(12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color.white.opacity(0.04))
+                                .cornerRadius(10)
+                                .padding(.horizontal, 16)
+                            }
                             }
                         }
                         
@@ -325,6 +343,27 @@ struct PatternCard: View {
     let isSelected: Bool
     let action: () -> Void
     
+    private func patternStrengthText(_ r: Double) -> String {
+        let absR = abs(r)
+        if absR >= 0.6 {
+            return "Strong"
+        } else if absR >= 0.3 {
+            return "Moderate"
+        } else {
+            return "Weak"
+        }
+    }
+    
+    private func patternConfidenceText(_ p: Double) -> String {
+        if p <= 0.01 {
+            return "High"
+        } else if p <= 0.05 {
+            return "Medium"
+        } else {
+            return "Low"
+        }
+    }
+    
     var body: some View {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 12) {
@@ -351,13 +390,13 @@ struct PatternCard: View {
                     .lineSpacing(4)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                HStack(spacing: 12) {
-                    Text("Pattern strength: \(String(format: "%.2f", pattern.r))")
-                    Text("Math check: \(String(format: "%.3f", pattern.adjustedPValue))")
-                    Text("Sample: \(pattern.sampleSize) days")
+                HStack(spacing: 16) {
+                    Text("Strength: \(patternStrengthText(pattern.r))")
+                    Text("Confidence: \(patternConfidenceText(pattern.adjustedPValue))")
+                    Text("Logged: \(pattern.sampleSize) days")
                 }
-                .font(.system(size: 10, design: .monospaced))
-                .foregroundColor(.white.opacity(0.4))
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundColor(.white.opacity(0.45))
             }
             .padding(.all, 14)
             .background(Color(red: 0.12, green: 0.17, blue: 0.28).opacity(isSelected ? 0.9 : 0.6))

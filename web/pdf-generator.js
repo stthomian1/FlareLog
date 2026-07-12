@@ -106,7 +106,12 @@
                 doc.setFont("courier", "normal");
                 doc.setFontSize(7.5);
                 doc.setTextColor(100, 116, 139);
-                doc.text(`Pattern strength: ${pattern.r.toFixed(2)}  Math check: ${pattern.adjustedPValue.toFixed(3)}  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
+                
+                const absR = Math.abs(pattern.r);
+                const strength = absR >= 0.6 ? "Strong" : (absR >= 0.3 ? "Moderate" : "Weak");
+                const confidence = pattern.adjustedPValue <= 0.01 ? "High" : (pattern.adjustedPValue <= 0.05 ? "Medium" : "Low");
+                
+                doc.text(`Strength: ${strength}  Confidence: ${confidence}  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
                 
                 currentY += cardHeight + 8; // Leave a space of 8pt between cards
             }
