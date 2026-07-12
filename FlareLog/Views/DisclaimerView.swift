@@ -22,38 +22,38 @@ public struct DisclaimerView: View {
                     .padding(.top, 40)
                     .shadow(color: .orange.opacity(0.3), radius: 10, x: 0, y: 5)
                 
-                Text("Medical Disclaimer")
+                Text("Safety Warning & Agreement")
                     .font(.system(size: 28, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 18) {
-                        Text("Please read this disclaimer carefully before using FlareLog.")
+                        Text("Please read this safety warning carefully before using FlareLog.")
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(.white)
                         
                         Divider()
                             .background(Color.white.opacity(0.1))
                         
-                        Text("• Not a Medical Device")
+                        Text("• This App is Not a Doctor")
                             .font(.system(size: 15, weight: .bold))
                             .foregroundColor(.orange)
-                        + Text("\nFlareLog is a personal wellness tracking journal. It is not a diagnostic tool, does not suggest medication changes or treatment plans, does not recommend activity limits, and is not a medical device.")
+                        + Text("\nFlareLog is just a personal daily journal to track how you feel. It cannot tell you what medical condition you have, tell you to change your meds or treatments, suggest limits on what you do, or act like a medical device.")
                             .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.85))
                         
-                        Text("• Personal Reference Only")
+                        Text("• For Your Own Info Only")
                             .font(.system(size: 15, weight: .bold))
                             .foregroundColor(.orange)
-                        + Text("\nAll content, statistics, and observations generated in this app are derived mathematically from data you enter. They are for informational purposes only, to help you identify statistical patterns in your own journal records.")
+                        + Text("\nAll the charts, stats, and patterns you see in this app are just math based on what you type in. They are only meant to help you spot trends in your own daily logs.")
                             .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.85))
                         
-                        Text("• Consult Your Doctor")
+                        Text("• Always Talk to Your Doctor")
                             .font(.system(size: 15, weight: .bold))
                             .foregroundColor(.orange)
-                        + Text("\nThis app is not a substitute for clinical advice. You should always discuss your symptoms, logs, and any statistical findings with a qualified physician or doctor. Never disregard or delay seeking medical help due to information tracked in this app.")
+                        + Text("\nThis app does not replace a real doctor. You should always talk about your symptoms, logs, and what you find in the app with your doctor or physician. Never ignore or delay getting medical help because of what you see here.")
                             .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.85))
                     }

@@ -50,8 +50,8 @@ public final class PDFExportService {
             currentY += 80
             
             // Medical Disclaimer Box (Regulatory requirement)
-            let disclaimerTitle = "IMPORTANT MEDICAL DISCLAIMER"
-            let disclaimerText = "This report is a personal tracking journal for your private reference and to assist conversation with your physician. FlareLog is not a diagnostic tool, does not recommend treatments or activity limits, and is not a medical device. Always seek professional clinical advice for medical decisions."
+            let disclaimerTitle = "IMPORTANT SAFETY WARNING"
+            let disclaimerText = "This report is a personal daily journal to track how you feel. FlareLog is not a doctor, doesn't diagnose illness, recommend treatments, or set limits. Use it to help you talk to your doctor. Always talk to a real physician for medical advice."
             
             let cardRect = CGRect(x: margin, y: currentY, width: contentWidth, height: 75)
             context.cgContext.setFillColor(UIColor.secondarySystemBackground.cgColor)
@@ -185,18 +185,18 @@ public final class PDFExportService {
                 
                 // Formulate Symptoms Text
                 var symptomsList: [String] = []
-                if log.symptoms.lightheadedness > 0 { symptomsList.append("Lighthead: \(log.symptoms.lightheadedness)") }
-                if log.symptoms.tachycardiaCount > 0 { symptomsList.append("Tachy: \(log.symptoms.tachycardiaCount)x (Sev: \(log.symptoms.tachycardiaSeverity))") }
-                if log.symptoms.fatigue > 0 { symptomsList.append("Fatigue: \(log.symptoms.fatigue)") }
+                if log.symptoms.lightheadedness > 0 { symptomsList.append("Dizzy: \(log.symptoms.lightheadedness)") }
+                if log.symptoms.tachycardiaCount > 0 { symptomsList.append("Racing Heart: \(log.symptoms.tachycardiaCount)x (Sev: \(log.symptoms.tachycardiaSeverity))") }
+                if log.symptoms.fatigue > 0 { symptomsList.append("Tiredness: \(log.symptoms.fatigue)") }
                 if log.symptoms.brainFog > 0 { symptomsList.append("Fog: \(log.symptoms.brainFog)") }
                 if log.symptoms.nausea > 0 { symptomsList.append("Nausea: \(log.symptoms.nausea)") }
-                if log.symptoms.syncopeExperienced { symptomsList.append("Syncope: \(log.symptoms.syncopeCount)x") }
+                if log.symptoms.syncopeExperienced { symptomsList.append("Fainted: \(log.symptoms.syncopeCount)x") }
                 let symptomsStr = symptomsList.isEmpty ? "All severity 0" : symptomsList.joined(separator: "\n")
                 
                 // Formulate Triggers Text
                 var triggersList: [String] = []
                 if let sleep = log.triggerCandidate.sleepHours { triggersList.append("Sleep: \(sleep)h") }
-                if let hyd = log.triggerCandidate.hydrationLiters { triggersList.append("Hydration: \(hyd)L") }
+                if let hyd = log.triggerCandidate.hydrationOunces { triggersList.append("Water: \(Int(hyd)) oz") }
                 if let stand = log.triggerCandidate.standingTimeMinutes { triggersList.append("Standing: \(stand)m") }
                 if let med = log.triggerCandidate.medicationTakenOnTime { triggersList.append("Med on-time: \(med ? "Yes" : "No")") }
                 if let cyc = log.triggerCandidate.menstrualCycleDay { triggersList.append("Cycle day: \(cyc)") }

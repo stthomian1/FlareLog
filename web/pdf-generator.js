@@ -48,9 +48,9 @@
         doc.setFont("helvetica", "bold");
         doc.setFontSize(8.5);
         doc.setTextColor(249, 115, 22); // Orange text
-        doc.text("IMPORTANT MEDICAL DISCLAIMER", margin + 12, currentY + 16);
+        doc.text("IMPORTANT SAFETY WARNING", margin + 12, currentY + 16);
         
-        const disclaimerText = "This report is a personal tracking journal for your private reference and to assist conversation with your physician. FlareLog is not a diagnostic tool, does not recommend treatments or activity limits, and is not a medical device. Always seek professional clinical advice for medical decisions.";
+        const disclaimerText = "This report is a personal daily journal to track how you feel. FlareLog is not a doctor, doesn't diagnose illness, recommend treatments, or set limits. Use it to help you talk to your doctor. Always talk to a real physician for medical advice.";
         const disclaimerLines = doc.splitTextToSize(disclaimerText, contentWidth - 24);
         
         doc.setFont("helvetica", "normal");
@@ -106,7 +106,7 @@
                 doc.setFont("courier", "normal");
                 doc.setFontSize(7.5);
                 doc.setTextColor(100, 116, 139);
-                doc.text(`Pearson r: ${pattern.r.toFixed(2)}  Adjusted p: ${pattern.adjustedPValue.toFixed(3)}  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
+                doc.text(`Pattern strength: ${pattern.r.toFixed(2)}  Math check: ${pattern.adjustedPValue.toFixed(3)}  Sample: ${pattern.sampleSize} days`, margin + 14, currentY + statLineOffset);
                 
                 currentY += cardHeight + 8; // Leave a space of 8pt between cards
             }
@@ -157,19 +157,19 @@
             // Build symptoms details string
             const symptomsList = [];
             const s = log.symptoms;
-            if (s.lightheadedness > 0) symptomsList.push(`Lighthead: ${s.lightheadedness}`);
-            if (s.tachycardiaCount > 0) symptomsList.push(`Tachy: ${s.tachycardiaCount}x (Sev: ${s.tachycardiaSeverity})`);
-            if (s.fatigue > 0) symptomsList.push(`Fatigue: ${s.fatigue}`);
+            if (s.lightheadedness > 0) symptomsList.push(`Dizzy: ${s.lightheadedness}`);
+            if (s.tachycardiaCount > 0) symptomsList.push(`Racing Heart: ${s.tachycardiaCount}x (Sev: ${s.tachycardiaSeverity})`);
+            if (s.fatigue > 0) symptomsList.push(`Tiredness: ${s.fatigue}`);
             if (s.brainFog > 0) symptomsList.push(`Fog: ${s.brainFog}`);
             if (s.nausea > 0) symptomsList.push(`Nausea: ${s.nausea}`);
-            if (s.syncopeExperienced) symptomsList.push(`Syncope: ${s.syncopeCount}x`);
+            if (s.syncopeExperienced) symptomsList.push(`Fainted: ${s.syncopeCount}x`);
             const symptomsStr = symptomsList.length === 0 ? "All severity 0" : symptomsList.join("\n");
             
             // Build habits details string
             const triggersList = [];
             const t = log.triggerCandidate;
             if (t.sleepHours !== undefined) triggersList.push(`Sleep: ${t.sleepHours}h`);
-            if (t.hydrationLiters !== undefined) triggersList.push(`Hydration: ${t.hydrationLiters}L`);
+            if (t.hydrationOunces !== undefined) triggersList.push(`Water: ${t.hydrationOunces} oz`);
             if (t.standingTimeMinutes !== undefined) triggersList.push(`Standing: ${t.standingTimeMinutes}m`);
             if (t.medicationTakenOnTime !== undefined) triggersList.push(`Med on-time: ${t.medicationTakenOnTime ? "Yes" : "No"}`);
             if (t.menstrualCycleDay !== undefined && t.menstrualCycleDay !== null) triggersList.push(`Cycle day: ${t.menstrualCycleDay}`);

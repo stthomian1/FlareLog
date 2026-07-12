@@ -26,13 +26,15 @@ public struct DailyLogView: View {
     // Triggers
     @State private var foodNotes: String = ""
     @State private var sleepHours: Double = 7.0
-    @State private var hydrationLiters: Double = 1.5
+    @State private var hydrationOunces: Double = 64.0
     @State private var standingTimeMinutes: Int = 20
     @State private var medicationTakenOnTime: Bool = true
     @State private var menstrualCycleDay: Int = 1
     @State private var enableMenstrualCycle: Bool = false
     @State private var barometricPressure: String = ""
     @State private var activityLevel: ActivityLevel = .light
+    
+    @State private var showHelpSheet: Bool = false
     
     // HealthKit Loaded metrics
     @State private var hkAverageHR: Double? = nil
@@ -128,43 +130,51 @@ public struct DailyLogView: View {
                         
                         // --- SECTION 1: SYMPTOMS (0-10 severity) ---
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Symptom Severity (0 to 10)")
-                                .font(.system(size: 16, weight: .bold, design: .rounded))
-                                .foregroundColor(.white)
+                            HStack {
+                                Text("How bad are your symptoms? (0 to 10)")
+                                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Button(action: { showHelpSheet = true }) {
+                                    Image(systemName: "info.circle")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.teal)
+                                }
+                            }
                             
                             // Lightheadedness slider
-                            SliderRow(title: "Lightheadedness", value: $lightheadedness, maxVal: 10, icon: "brain")
+                            SliderRow(title: "Dizziness / Lightheadedness", value: $lightheadedness, maxVal: 10, icon: "brain")
                             
                             // Tachycardia episodes
                             VStack(spacing: 8) {
                                 HStack {
-                                    Label("Tachycardia Episodes", systemImage: "heart.fill")
+                                    Label("Racing Heart Episodes (Tachycardia)", systemImage: "heart.fill")
                                         .font(.system(size: 14, weight: .medium))
                                         .foregroundColor(.white.opacity(0.9))
                                     Spacer()
-                                    Stepper("\(tachycardiaCount) count", value: $tachycardiaCount, in: 0...50)
+                                    Stepper("\(tachycardiaCount) times", value: $tachycardiaCount, in: 0...50)
                                         .font(.system(size: 13, weight: .bold))
                                 }
                                 
                                 if tachycardiaCount > 0 {
-                                    SliderRow(title: "Tachycardia Severity", value: $tachycardiaSeverity, maxVal: 10, icon: "heart.text.square")
+                                    SliderRow(title: "Racing Heart Severity", value: $tachycardiaSeverity, maxVal: 10, icon: "heart.text.square")
                                         .transition(.slide)
                                 }
                             }
                             
                             // Fatigue slider
-                            SliderRow(title: "Fatigue", value: $fatigue, maxVal: 10, icon: "battery.50")
+                            SliderRow(title: "Fatigue (Extreme Tiredness)", value: $fatigue, maxVal: 10, icon: "battery.50")
                             
                             // Brain fog slider
-                            SliderRow(title: "Brain Fog", value: $brainFog, maxVal: 10, icon: "cloud.drizzle")
+                            SliderRow(title: "Brain Fog (Fuzzy Thinking)", value: $brainFog, maxVal: 10, icon: "cloud.drizzle")
                             
                             // Nausea slider
-                            SliderRow(title: "Nausea", value: $nausea, maxVal: 10, icon: "thermometer")
+                            SliderRow(title: "Nausea (Sick to Stomach)", value: $nausea, maxVal: 10, icon: "thermometer")
                             
                             // Syncope / Near Syncope experienced
                             VStack(spacing: 8) {
                                 Toggle(isOn: $syncopeExperienced.animation()) {
-                                    Label("Syncope / Near-Syncope", systemImage: "sparkles.tv")
+                                    Label("Fainting / Passing Out (Syncope)", systemImage: "sparkles.tv")
                                         .font(.system(size: 14, weight: .medium))
                                         .foregroundColor(.white.opacity(0.9))
                                 }
@@ -172,7 +182,7 @@ public struct DailyLogView: View {
                                 
                                 if syncopeExperienced {
                                     HStack {
-                                        Text("Fainting/Near-fainting Episodes")
+                                        Text("Fainting or near-fainting times")
                                             .font(.system(size: 13))
                                             .foregroundColor(.white.opacity(0.7))
                                         Spacer()
@@ -190,13 +200,21 @@ public struct DailyLogView: View {
                         
                         // --- SECTION 2: DAILY HABITS / TRIGGERS ---
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Daily Habits & Triggers")
-                                .font(.system(size: 16, weight: .bold, design: .rounded))
-                                .foregroundColor(.white)
+                            HStack {
+                                Text("Daily Habits & Triggers (What you did)")
+                                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Button(action: { showHelpSheet = true }) {
+                                    Image(systemName: "info.circle")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.teal)
+                                }
+                            }
                             
                             // Sleep duration stepper
                             HStack {
-                                Label("Sleep Duration", systemImage: "bed.double")
+                                Label("Sleep Time", systemImage: "bed.double")
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(.white.opacity(0.9))
                                 Spacer()
@@ -206,17 +224,17 @@ public struct DailyLogView: View {
                             
                             // Hydration stepper
                             HStack {
-                                Label("Hydration", systemImage: "drop")
+                                Label("Water Intake", systemImage: "drop")
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(.white.opacity(0.9))
                                 Spacer()
-                                Stepper("\(String(format: "%.2f", hydrationLiters)) L", value: $hydrationLiters, in: 0...10, step: 0.25)
+                                Stepper("\(Int(hydrationOunces)) oz", value: $hydrationOunces, in: 0...300, step: 8)
                                     .font(.system(size: 13, weight: .bold))
                             }
                             
                             // Standing time minutes stepper
                             HStack {
-                                Label("Total Standing Time", systemImage: "clock")
+                                Label("Time Spent Standing", systemImage: "clock")
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(.white.opacity(0.9))
                                 Spacer()
@@ -226,7 +244,7 @@ public struct DailyLogView: View {
                             
                             // Medication on-time toggle
                             Toggle(isOn: $medicationTakenOnTime) {
-                                Label("Medication Taken On-Time", systemImage: "pills")
+                                Label("Meds Taken On Time", systemImage: "pills")
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(.white.opacity(0.9))
                             }
@@ -234,7 +252,7 @@ public struct DailyLogView: View {
                             
                             // Activity Level picker
                             VStack(alignment: .leading, spacing: 8) {
-                                Label("Activity Level", systemImage: "figure.run")
+                                Label("How active were you?", systemImage: "figure.run")
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(.white.opacity(0.9))
                                 Picker("Activity Level", selection: $activityLevel) {
@@ -248,7 +266,7 @@ public struct DailyLogView: View {
                             // Menstrual cycle day (Optional)
                             VStack(alignment: .leading, spacing: 8) {
                                 Toggle(isOn: $enableMenstrualCycle.animation()) {
-                                    Label("Track Menstrual Cycle Day", systemImage: "calendar.day.timeline.left")
+                                    Label("Track Period Cycle Day", systemImage: "calendar.day.timeline.left")
                                         .font(.system(size: 14, weight: .medium))
                                         .foregroundColor(.white.opacity(0.9))
                                 }
@@ -256,7 +274,7 @@ public struct DailyLogView: View {
                                 
                                 if enableMenstrualCycle {
                                     HStack {
-                                        Text("Cycle Day")
+                                        Text("Period Cycle Day")
                                             .font(.system(size: 13))
                                             .foregroundColor(.white.opacity(0.7))
                                         Spacer()
@@ -268,7 +286,7 @@ public struct DailyLogView: View {
                             
                             // Barometric Pressure (Optional text field)
                             HStack {
-                                Label("Barometric Pressure", systemImage: "barometer")
+                                Label("Barometric Pressure (Air Pressure)", systemImage: "barometer")
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(.white.opacity(0.9))
                                 Spacer()
@@ -288,10 +306,10 @@ public struct DailyLogView: View {
                             
                             // Food Notes text field
                             VStack(alignment: .leading, spacing: 6) {
-                                Text("Food / Diet Notes (e.g. high sodium, heavy carbs)")
+                                Text("Food & Drink Notes (like high salt, lots of carbs)")
                                     .font(.system(size: 12))
                                     .foregroundColor(.white.opacity(0.6))
-                                TextField("Egg salad, salt tablets, etc.", text: $foodNotes)
+                                TextField("Chips, salty foods, heavy lunch, etc.", text: $foodNotes)
                                     .font(.system(size: 14))
                                     .padding(.all, 10)
                                     .background(Color.black.opacity(0.2))
@@ -305,10 +323,10 @@ public struct DailyLogView: View {
                         
                         // --- SECTION 3: GENERAL NOTES ---
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Journal Notes")
+                            Text("Extra Notes")
                                 .font(.system(size: 16, weight: .bold, design: .rounded))
                                 .foregroundColor(.white)
-                            TextField("Describe anything not covered above (e.g. weather changes, stressors)...", text: $notes, axis: .vertical)
+                            TextField("Write anything else here (like stress, school, weird weather)...", text: $notes, axis: .vertical)
                                 .font(.system(size: 14))
                                 .lineLimit(3...8)
                                 .padding(.all, 12)
@@ -353,6 +371,9 @@ public struct DailyLogView: View {
                 }
             }
             .onAppear(perform: populateFromEditingLog)
+            .sheet(isPresented: $showHelpSheet) {
+                HelpSheetView()
+            }
         }
     }
     
@@ -372,7 +393,7 @@ public struct DailyLogView: View {
             
             foodNotes = log.triggerCandidate.foodNotes ?? ""
             sleepHours = log.triggerCandidate.sleepHours ?? 7.0
-            hydrationLiters = log.triggerCandidate.hydrationLiters ?? 1.5
+            hydrationOunces = log.triggerCandidate.hydrationOunces ?? 64.0
             standingTimeMinutes = log.triggerCandidate.standingTimeMinutes ?? 20
             medicationTakenOnTime = log.triggerCandidate.medicationTakenOnTime ?? true
             if let cycle = log.triggerCandidate.menstrualCycleDay {
@@ -437,7 +458,7 @@ public struct DailyLogView: View {
         let triggers = TriggerCandidate(
             foodNotes: foodNotes.isEmpty ? nil : foodNotes,
             sleepHours: sleepHours,
-            hydrationLiters: hydrationLiters,
+            hydrationOunces: hydrationOunces,
             standingTimeMinutes: standingTimeMinutes,
             medicationTakenOnTime: medicationTakenOnTime,
             menstrualCycleDay: enableMenstrualCycle ? menstrualCycleDay : nil,

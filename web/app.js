@@ -91,6 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const settingsHKStatus = document.getElementById("settings-hk-status");
     const settingsBtnHKConnect = document.getElementById("settings-btn-hk-connect");
     const btnShowDisclaimer = document.getElementById("btn-show-disclaimer");
+    const helpModal = document.getElementById("help-modal");
+    const btnCloseHelp = document.getElementById("btn-close-help");
+    const settingsBtnShowHelp = document.getElementById("settings-btn-show-help");
 
     // Developer settings
     const devPremiumToggle = document.getElementById("dev-premium-toggle");
@@ -114,6 +117,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btnShowDisclaimer.addEventListener("click", () => {
         disclaimerModal.classList.remove("hidden");
+    });
+
+    // --- HELP SHEET LOGIC ---
+    if (btnCloseHelp) {
+        btnCloseHelp.addEventListener("click", () => {
+            helpModal.classList.add("hidden");
+        });
+    }
+
+    if (settingsBtnShowHelp) {
+        settingsBtnShowHelp.addEventListener("click", () => {
+            helpModal.classList.remove("hidden");
+        });
+    }
+
+    document.querySelectorAll(".btn-help-trigger").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            helpModal.classList.remove("hidden");
+        });
     });
 
     // --- NAVIGATION LOGIC ---
@@ -357,7 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
         inputSyncopeCount.value = 1;
 
         inputSleep.value = "7.0";
-        inputHydration.value = "1.5";
+        inputHydration.value = "64";
         inputStanding.value = "20";
         inputMedication.checked = true;
         inputActivity.value = "light";
@@ -407,7 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Populate habits
         inputSleep.value = log.triggerCandidate.sleepHours || 7.0;
-        inputHydration.value = log.triggerCandidate.hydrationLiters || 1.5;
+        inputHydration.value = log.triggerCandidate.hydrationOunces || 64;
         inputStanding.value = log.triggerCandidate.standingTimeMinutes || 20;
         inputMedication.checked = log.triggerCandidate.medicationTakenOnTime !== false;
         inputActivity.value = log.triggerCandidate.activityLevel || "light";
@@ -456,7 +480,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const triggers = {
             foodNotes: inputFood.value.trim() || null,
             sleepHours: parseFloat(inputSleep.value),
-            hydrationLiters: parseFloat(inputHydration.value),
+            hydrationOunces: parseFloat(inputHydration.value),
             standingTimeMinutes: parseInt(inputStanding.value),
             medicationTakenOnTime: inputMedication.checked,
             menstrualCycleDay: inputMenstrualEnable.checked ? parseInt(inputMenstrualDay.value) : null,
@@ -519,9 +543,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const avgLight = logs.length === 0 ? 0.0 : logs.reduce((sum, l) => sum + (l.symptoms?.lightheadedness || 0), 0) / logs.length;
         statLighthead.textContent = avgLight.toFixed(1);
 
-        const validHydration = logs.filter(l => l.triggerCandidate?.hydrationLiters !== undefined);
-        const avgHydr = validHydration.length === 0 ? 0.0 : validHydration.reduce((sum, l) => sum + l.triggerCandidate.hydrationLiters, 0) / validHydration.length;
-        statHydration.textContent = `${avgHydr.toFixed(1)}L`;
+        const validHydration = logs.filter(l => l.triggerCandidate?.hydrationOunces !== undefined);
+        const avgHydr = validHydration.length === 0 ? 0.0 : validHydration.reduce((sum, l) => sum + l.triggerCandidate.hydrationOunces, 0) / validHydration.length;
+        statHydration.textContent = `${avgHydr.toFixed(0)} oz`;
 
         // Clear list
         logsListContainer.innerHTML = "";
@@ -530,8 +554,8 @@ document.addEventListener("DOMContentLoaded", () => {
             logsListContainer.innerHTML = `
                 <div class="info-card" style="align-items: center; text-align: center; padding: 30px 20px;">
                     <span style="font-size: 32px; opacity: 0.3;">📄</span>
-                    <strong>No journal entries yet</strong>
-                    <p>Enter your first daily log to start tracking your POTS symptoms.</p>
+                    <strong>No logs yet!</strong>
+                    <p>Add your first daily log to start tracking how your POTS is doing.</p>
                 </div>
             `;
             return;
@@ -551,12 +575,12 @@ document.addEventListener("DOMContentLoaded", () => {
             // Symptom Chips HTML
             let chipsHtml = "";
             const s = log.symptoms;
-            if (s.lightheadedness > 0) chipsHtml += `<span class="chip cyan">Lighthead: ${s.lightheadedness}</span>`;
-            if (s.tachycardiaCount > 0) chipsHtml += `<span class="chip purple">Tachy: ${s.tachycardiaCount}x</span>`;
-            if (s.fatigue > 0) chipsHtml += `<span class="chip orange">Fatigue: ${s.fatigue}</span>`;
+            if (s.lightheadedness > 0) chipsHtml += `<span class="chip cyan">Dizzy: ${s.lightheadedness}</span>`;
+            if (s.tachycardiaCount > 0) chipsHtml += `<span class="chip purple">Racing Heart: ${s.tachycardiaCount}x</span>`;
+            if (s.fatigue > 0) chipsHtml += `<span class="chip orange">Tiredness: ${s.fatigue}</span>`;
             if (s.brainFog > 0) chipsHtml += `<span class="chip blue">Fog: ${s.brainFog}</span>`;
             if (s.nausea > 0) chipsHtml += `<span class="chip pink">Nausea: ${s.nausea}</span>`;
-            if (s.syncopeExperienced) chipsHtml += `<span class="chip red">Syncope: ${s.syncopeCount}x</span>`;
+            if (s.syncopeExperienced) chipsHtml += `<span class="chip red">Fainted: ${s.syncopeCount}x</span>`;
 
             if (chipsHtml === "") {
                 chipsHtml = `<span class="chip muted">No symptoms logged</span>`;
@@ -566,7 +590,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let habitsList = [];
             const t = log.triggerCandidate;
             if (t.sleepHours !== undefined) habitsList.push(`<span>🛏️ ${t.sleepHours}h sleep</span>`);
-            if (t.hydrationLiters !== undefined) habitsList.push(`<span>💧 ${t.hydrationLiters}L</span>`);
+            if (t.hydrationOunces !== undefined) habitsList.push(`<span>💧 ${t.hydrationOunces} oz water</span>`);
             if (t.standingTimeMinutes !== undefined) habitsList.push(`<span>⏱️ ${t.standingTimeMinutes}m stand</span>`);
             
             const habitsSummaryHtml = habitsList.join("");
@@ -839,9 +863,9 @@ document.addEventListener("DOMContentLoaded", () => {
             };
             
             const triggers = {
-                foodNotes: i % 3 === 0 ? "High sodium diet" : "Standard diet",
+                foodNotes: i % 3 === 0 ? "High salt diet" : "Regular food",
                 sleepHours: sleep,
-                hydrationLiters: 1.0 + (i % 4) * 0.5,
+                hydrationOunces: 32.0 + (i % 4) * 16.0,
                 standingTimeMinutes: standTime,
                 medicationTakenOnTime: i % 8 !== 0,
                 menstrualCycleDay: i % 28 + 1,

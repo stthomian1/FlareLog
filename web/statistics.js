@@ -9,51 +9,51 @@ const MINIMUM_DAYS_THRESHOLD = 14;
 const TRIGGERS = [
     {
         id: "sleepHours",
-        displayName: "sleep duration",
+        displayName: "sleep time",
         unit: "hours",
         extractor: log => log.triggerCandidate?.sleepHours,
-        lowString: "you logged under",
-        highString: "you logged over"
+        lowString: "you slept under",
+        highString: "you slept over"
     },
     {
         id: "hydration",
-        displayName: "hydration",
-        unit: "L",
-        extractor: log => log.triggerCandidate?.hydrationLiters,
-        lowString: "your hydration was under",
-        highString: "your hydration was over"
+        displayName: "water intake",
+        unit: "oz",
+        extractor: log => log.triggerCandidate?.hydrationOunces,
+        lowString: "you drank under",
+        highString: "you drank over"
     },
     {
         id: "standingTime",
         displayName: "standing time",
         unit: "minutes",
         extractor: log => log.triggerCandidate?.standingTimeMinutes,
-        lowString: "your standing time was under",
-        highString: "your standing time was over"
+        lowString: "you stood for under",
+        highString: "you stood for over"
     },
     {
         id: "medication",
-        displayName: "medication taken on time",
+        displayName: "taking meds on time",
         unit: "",
         extractor: log => log.triggerCandidate?.medicationTakenOnTime ? 1.0 : 0.0,
-        lowString: "you missed medication",
-        highString: "you took medication on time"
+        lowString: "you missed your meds",
+        highString: "you took your meds on time"
     },
     {
         id: "menstrualCycleDay",
-        displayName: "menstrual cycle day",
+        displayName: "period cycle day",
         unit: "day",
         extractor: log => log.triggerCandidate?.menstrualCycleDay,
-        lowString: "your menstrual cycle day was under",
-        highString: "your menstrual cycle day was over"
+        lowString: "your period cycle day was under",
+        highString: "your period cycle day was over"
     },
     {
         id: "barometricPressure",
-        displayName: "barometric pressure",
+        displayName: "air pressure (barometer)",
         unit: "hPa",
         extractor: log => log.triggerCandidate?.weatherBarometricPressure,
-        lowString: "barometric pressure was under",
-        highString: "barometric pressure was over"
+        lowString: "air pressure was under",
+        highString: "air pressure was over"
     },
     {
         id: "activityLevel",
@@ -67,29 +67,29 @@ const TRIGGERS = [
             if (val === "vigorous") return 3.0;
             return null;
         },
-        lowString: "your activity level was under or equal to",
-        highString: "your activity level was over"
+        lowString: "you were mostly resting",
+        highString: "you were super active"
     },
     // HealthKit Mock data
     {
         id: "hkSleep",
-        displayName: "HealthKit sleep duration",
+        displayName: "HealthKit sleep time",
         unit: "hours",
         extractor: log => log.healthKitPull?.sleepDuration,
-        lowString: "HealthKit recorded under",
-        highString: "HealthKit recorded over"
+        lowString: "Apple Health said you slept under",
+        highString: "Apple Health said you slept over"
     },
     {
         id: "hkSteps",
-        displayName: "HealthKit step count",
+        displayName: "HealthKit steps",
         unit: "steps",
         extractor: log => log.healthKitPull?.stepCount,
-        lowString: "HealthKit steps were under",
-        highString: "HealthKit steps were over"
+        lowString: "Apple Health steps were under",
+        highString: "Apple Health steps were over"
     },
     {
         id: "hkHR",
-        displayName: "average heart rate",
+        displayName: "avg heart rate",
         unit: "bpm",
         extractor: log => log.healthKitPull?.heartRateAverage,
         lowString: "your average heart rate was under",
@@ -97,36 +97,36 @@ const TRIGGERS = [
     },
     {
         id: "hkHRV",
-        displayName: "average HRV",
+        displayName: "avg heart rate variability (HRV)",
         unit: "ms",
         extractor: log => log.healthKitPull?.heartRateVariabilityAverage,
-        lowString: "your average HRV was under",
-        highString: "your average HRV was over"
+        lowString: "your HRV was under",
+        highString: "your HRV was over"
     }
 ];
 
 const SYMPTOMS = [
     {
         id: "lightheadedness",
-        displayName: "lightheadedness",
+        displayName: "dizziness",
         unit: "/10",
         extractor: log => log.symptoms?.lightheadedness
     },
     {
         id: "tachycardiaSeverity",
-        displayName: "tachycardia severity",
+        displayName: "racing heart severity",
         unit: "/10",
         extractor: log => log.symptoms?.tachycardiaSeverity
     },
     {
         id: "tachycardiaCount",
-        displayName: "tachycardia episode count",
+        displayName: "racing heart episodes",
         unit: "episodes",
         extractor: log => log.symptoms?.tachycardiaCount
     },
     {
         id: "fatigue",
-        displayName: "fatigue",
+        displayName: "tiredness",
         unit: "/10",
         extractor: log => log.symptoms?.fatigue
     },
@@ -144,7 +144,7 @@ const SYMPTOMS = [
     },
     {
         id: "syncopeCount",
-        displayName: "syncope count",
+        displayName: "fainting episodes",
         unit: "episodes",
         extractor: log => log.symptoms?.syncopeCount
     }
@@ -245,10 +245,10 @@ function generateObservationalSentence(trigger, symptom, r, pairedPoints) {
     if (trigger.id === "medication") {
         if (r > 0) {
             targetGroup = pairedPoints.filter(p => p[0] >= 0.5);
-            conditionPhrase = "you took medication on time";
+            conditionPhrase = "you took your meds on time";
         } else {
             targetGroup = pairedPoints.filter(p => p[0] < 0.5);
-            conditionPhrase = "you missed medication";
+            conditionPhrase = "you missed your meds";
         }
     } else {
         if (r > 0) {
@@ -264,7 +264,7 @@ function generateObservationalSentence(trigger, symptom, r, pairedPoints) {
     const k = targetGroup.filter(p => p[1] > symptomThreshold).length;
     const total = targetGroup.length;
     
-    return `On days ${conditionPhrase}, your ${symptom.displayName} severity was higher in ${k} of ${total} entries. Log more days to confirm this pattern.`;
+    return `On days when ${conditionPhrase}, your ${symptom.displayName} was worse in ${k} out of ${total} logs. Keep tracking to see if this pattern holds up!`;
 }
 
 /**

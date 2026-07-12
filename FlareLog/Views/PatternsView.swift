@@ -92,10 +92,10 @@ public struct PatternsView: View {
                                     Image(systemName: "chart.bar.doc.horizontal")
                                         .font(.system(size: 44))
                                         .foregroundColor(.white.opacity(0.2))
-                                    Text("No patterns detected yet")
+                                    Text("No patterns found yet!")
                                         .font(.system(size: 15, weight: .semibold))
                                         .foregroundColor(.white.opacity(0.6))
-                                    Text("Our correlation engine found no statistically significant patterns in your entries yet. Keep logging to collect more data.")
+                                    Text("We haven't found any clear patterns in your logs yet. Keep logging every day so we can spot connections!")
                                         .font(.system(size: 13))
                                         .foregroundColor(.white.opacity(0.4))
                                         .multilineTextAlignment(.center)
@@ -154,7 +154,7 @@ public struct PatternsView: View {
                                     }
                                 }
                                 
-                                Text("Each point represents one log entry. This visual chart demonstrates the statistical distribution of the two variables.")
+                                Text("Each dot is one log entry. This chart shows how your habits and symptoms relate.")
                                     .font(.system(size: 11))
                                     .foregroundColor(.white.opacity(0.5))
                             }
@@ -229,7 +229,7 @@ struct ThresholdIndicatorView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            Text("Gathering Tracking History")
+            Text("Collecting Logs")
                 .font(.system(size: 20, weight: .bold, design: .rounded))
                 .foregroundColor(.white)
             
@@ -259,12 +259,12 @@ struct ThresholdIndicatorView: View {
             }
             .padding(.vertical, 10)
             
-            Text("Patterns can be shown after 14 days of data.")
+            Text("We can find patterns after you track for 14 days.")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(.white.opacity(0.8))
                 .multilineTextAlignment(.center)
             
-            Text("FlareLog uses a rigorous multiple-comparisons correction to adjust statistical significance thresholds. This prevents showing misleading correlations before you have logged enough data.")
+            Text("We use safe statistical math to check if patterns are real. This stops us from showing false patterns before we have enough data.")
                 .font(.system(size: 12))
                 .foregroundColor(.white.opacity(0.4))
                 .multilineTextAlignment(.center)
@@ -289,16 +289,16 @@ struct PatternsPaywallUpsellView: View {
                 .font(.system(size: 22, weight: .bold, design: .rounded))
                 .foregroundColor(.white)
             
-            Text("Surface statistical associations between your sleep, hydration, activity, and POTS symptoms using our Benjamini-Hochberg corrected correlation engine.")
+            Text("Find connections between your sleep, water intake, activity, and symptoms using our smart pattern finder.")
                 .font(.system(size: 14))
                 .foregroundColor(.white.opacity(0.7))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 30)
             
             VStack(alignment: .leading, spacing: 12) {
-                Label("Identify symptom patterns and habits", systemImage: "checkmark.circle.fill")
-                Label("Verify with robust FDR statistics", systemImage: "checkmark.circle.fill")
-                Label("Export locally-generated PDF reports", systemImage: "checkmark.circle.fill")
+                Label("Spot patterns between habits and symptoms", systemImage: "checkmark.circle.fill")
+                Label("Make sure patterns are real using smart math", systemImage: "checkmark.circle.fill")
+                Label("Save and share PDF reports", systemImage: "checkmark.circle.fill")
             }
             .font(.system(size: 13, weight: .medium))
             .foregroundColor(.white.opacity(0.9))
@@ -352,8 +352,8 @@ struct PatternCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack(spacing: 12) {
-                    Text("Pearson r: \(String(format: "%.2f", pattern.r))")
-                    Text("Adjusted p: \(String(format: "%.3f", pattern.adjustedPValue))")
+                    Text("Pattern strength: \(String(format: "%.2f", pattern.r))")
+                    Text("Math check: \(String(format: "%.3f", pattern.adjustedPValue))")
                     Text("Sample: \(pattern.sampleSize) days")
                 }
                 .font(.system(size: 10, design: .monospaced))

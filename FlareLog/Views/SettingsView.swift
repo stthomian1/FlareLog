@@ -8,6 +8,7 @@ public struct SettingsView: View {
     
     @State private var showDisclaimer: Bool = false
     @State private var showPaywall: Bool = false
+    @State private var showHelpGuide: Bool = false
     @State private var isGeneratingMockData: Bool = false
     
     public init() {}
@@ -59,8 +60,23 @@ public struct SettingsView: View {
                 }
                 .listRowBackground(Color(red: 0.12, green: 0.17, blue: 0.28).opacity(0.6))
                 
+                // Help & Support Section
+                Section(header: Text("Help & Support").foregroundColor(.teal)) {
+                    Button(action: { showHelpGuide = true }) {
+                        HStack {
+                            Label("Help Guide & Definitions", systemImage: "questionmark.circle")
+                                .foregroundColor(.white)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 12))
+                                .foregroundColor(.white.opacity(0.4))
+                        }
+                    }
+                }
+                .listRowBackground(Color(red: 0.12, green: 0.17, blue: 0.28).opacity(0.6))
+                
                 // HealthKit Section
-                Section(header: Text("HealthKit passive tracking").foregroundColor(.teal)) {
+                Section(header: Text("Apple Health Sync").foregroundColor(.teal)) {
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Health Data Access")
@@ -85,10 +101,10 @@ public struct SettingsView: View {
                 .listRowBackground(Color(red: 0.12, green: 0.17, blue: 0.28).opacity(0.6))
                 
                 // Legal & Regulatory Framing Section
-                Section(header: Text("Legal & Regulatory").foregroundColor(.teal)) {
+                Section(header: Text("Safety & Legal").foregroundColor(.teal)) {
                     Button(action: { showDisclaimer = true }) {
                         HStack {
-                            Text("View Medical Disclaimer")
+                            Text("View Safety Warning")
                                 .foregroundColor(.white)
                             Spacer()
                             Image(systemName: "chevron.right")
@@ -98,10 +114,10 @@ public struct SettingsView: View {
                     }
                     
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Scope Limitation Notice")
+                        Text("App Limits Warning")
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundColor(.white.opacity(0.8))
-                        Text("FlareLog is an observational wellness tracking journal. It does not diagnose, treat, or manage POTS or any other chronic condition. It does not issue clinical directives, recommend activity limits, or make medication alterations. Use strictly as personal tracking reference.")
+                        Text("FlareLog is a daily journal to track how you feel. It doesn't diagnose, treat, or manage POTS or any other illness. It doesn't give medical orders, set activity limits, or change your meds. Use it only as a personal reference.")
                             .font(.system(size: 10))
                             .foregroundColor(.white.opacity(0.45))
                             .lineSpacing(2)
@@ -138,7 +154,7 @@ public struct SettingsView: View {
                     }
                     .disabled(isGeneratingMockData)
                     
-                    Text("Forces Premium Status locally to test Benjamini-Hochberg calculations, SwiftUI Charts, and local PDF Exports without StoreKit sandbox accounts. The synthetic data contains planted patterns (e.g. low sleep correlates with high lightheadedness).")
+                    Text("Unlock Premium features to test math patterns, charts, and PDF exports. The test data puts in patterns on purpose (like less sleep makes you more dizzy) to test the app.")
                         .font(.system(size: 10))
                         .foregroundColor(.white.opacity(0.4))
                 }
@@ -153,6 +169,9 @@ public struct SettingsView: View {
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView(isPresented: $showPaywall)
+        }
+        .sheet(isPresented: $showHelpGuide) {
+            HelpSheetView()
         }
     }
     
@@ -187,9 +206,9 @@ public struct SettingsView: View {
             )
             
             let triggers = TriggerCandidate(
-                foodNotes: i % 3 == 0 ? "High sodium diet" : "Standard diet",
+                foodNotes: i % 3 == 0 ? "High salt diet" : "Regular food",
                 sleepHours: sleep,
-                hydrationLiters: 1.0 + Double(i % 4) * 0.5,
+                hydrationOunces: 32.0 + Double(i % 4) * 16.0,
                 standingTimeMinutes: standTime,
                 medicationTakenOnTime: i % 8 != 0,
                 menstrualCycleDay: i % 28 + 1,
@@ -228,16 +247,5 @@ public struct SettingsView: View {
         
         try? modelContext.save()
     }
-            }
-            .scrollContentBackground(.hidden)
-            .background(Color.clear)
-        }
-        .navigationTitle("Settings")
-        .sheet(isPresented: $showDisclaimer) {
-            DisclaimerView(isPresented: $showDisclaimer)
-        }
-        .sheet(isPresented: $showPaywall) {
-            PaywallView(isPresented: $showPaywall)
-        }
-    }
+}
 }

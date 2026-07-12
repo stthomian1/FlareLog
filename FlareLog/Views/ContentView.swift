@@ -200,13 +200,13 @@ struct RecentLogCard: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         if log.symptomLightheadedness > 0 {
-                            ChipView(text: "Lighthead: \(log.symptomLightheadedness)", color: .cyan)
+                            ChipView(text: "Dizzy: \(log.symptomLightheadedness)", color: .cyan)
                         }
                         if log.symptomTachycardiaCount > 0 {
-                            ChipView(text: "Tachy: \(log.symptomTachycardiaCount)x", color: .purple)
+                            ChipView(text: "Racing Heart: \(log.symptomTachycardiaCount)x", color: .purple)
                         }
                         if log.symptomFatigue > 0 {
-                            ChipView(text: "Fatigue: \(log.symptomFatigue)", color: .orange)
+                            ChipView(text: "Tiredness: \(log.symptomFatigue)", color: .orange)
                         }
                         if log.symptomBrainFog > 0 {
                             ChipView(text: "Fog: \(log.symptomBrainFog)", color: .blue)
@@ -215,7 +215,7 @@ struct RecentLogCard: View {
                             ChipView(text: "Nausea: \(log.symptomNausea)", color: .pink)
                         }
                         if log.symptomSyncopeExperienced {
-                            ChipView(text: "Syncope: \(log.symptomSyncopeCount)x", color: .red)
+                            ChipView(text: "Fainted: \(log.symptomSyncopeCount)x", color: .red)
                         }
                         
                         // If no symptoms, display none
@@ -235,8 +235,8 @@ struct RecentLogCard: View {
                     if let sl = log.triggerSleepHours {
                         Label("\(String(format: "%.1f", sl))h sleep", systemImage: "bed.double.fill")
                     }
-                    if let hyd = log.triggerHydrationLiters {
-                        Label("\(String(format: "%.1f", hyd))L hydration", systemImage: "drop.fill")
+                    if let hyd = log.triggerHydrationOunces {
+                        Label("\(Int(hyd)) oz water", systemImage: "drop.fill")
                     }
                     if let st = log.triggerStandingTimeMinutes {
                         Label("\(st)m stand", systemImage: "clock.fill")
@@ -308,14 +308,14 @@ struct QuickStatsWidget: View {
                 color: .teal
             )
             StatMetricBox(
-                title: "Avg Lighthead",
+                title: "Avg Dizziness",
                 value: String(format: "%.1f", avgLightheadedness),
                 icon: "brain.head.profile",
                 color: .cyan
             )
             StatMetricBox(
-                title: "Avg Hydration",
-                value: String(format: "%.1fL", avgHydration),
+                title: "Avg Water Intake",
+                value: String(format: "%.0f oz", avgHydration),
                 icon: "drop.fill",
                 color: .blue
             )
@@ -328,7 +328,7 @@ struct QuickStatsWidget: View {
     }
     
     private var avgHydration: Double {
-        let valid = logs.compactMap { $0.triggerHydrationLiters }
+        let valid = logs.compactMap { $0.triggerHydrationOunces }
         return valid.isEmpty ? 0.0 : valid.reduce(0.0, +) / Double(valid.count)
     }
 }

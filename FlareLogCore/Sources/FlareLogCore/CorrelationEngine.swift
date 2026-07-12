@@ -53,79 +53,79 @@ public struct CorrelationEngine {
     public static let triggers: [TestableVariable] = [
         TestableVariable(
             id: "sleepHours",
-            displayName: "sleep duration",
+            displayName: "sleep time",
             unit: "hours",
             extractor: { $0.triggerCandidate.sleepHours },
-            lowString: "you logged under",
-            highString: "you logged over"
+            lowString: "you slept under",
+            highString: "you slept over"
         ),
         TestableVariable(
             id: "hydration",
-            displayName: "hydration",
-            unit: "L",
-            extractor: { $0.triggerCandidate.hydrationLiters },
-            lowString: "your hydration was under",
-            highString: "your hydration was over"
+            displayName: "water intake",
+            unit: "oz",
+            extractor: { $0.triggerCandidate.hydrationOunces },
+            lowString: "you drank under",
+            highString: "you drank over"
         ),
         TestableVariable(
             id: "standingTime",
             displayName: "standing time",
             unit: "minutes",
             extractor: { $0.triggerCandidate.standingTimeMinutes.map(Double.init) },
-            lowString: "your standing time was under",
-            highString: "your standing time was over"
+            lowString: "you stood for under",
+            highString: "you stood for over"
         ),
         TestableVariable(
             id: "medication",
-            displayName: "medication taken on time",
+            displayName: "taking meds on time",
             unit: "",
             extractor: { $0.triggerCandidate.medicationTakenOnTime.map { $0 ? 1.0 : 0.0 } },
-            lowString: "you missed medication",
-            highString: "you took medication on time"
+            lowString: "you missed your meds",
+            highString: "you took your meds on time"
         ),
         TestableVariable(
             id: "menstrualCycleDay",
-            displayName: "menstrual cycle day",
+            displayName: "period cycle day",
             unit: "day",
             extractor: { $0.triggerCandidate.menstrualCycleDay.map(Double.init) },
-            lowString: "your menstrual cycle day was under",
-            highString: "your menstrual cycle day was over"
+            lowString: "your period cycle day was under",
+            highString: "your period cycle day was over"
         ),
         TestableVariable(
             id: "barometricPressure",
-            displayName: "barometric pressure",
+            displayName: "air pressure (barometer)",
             unit: "hPa",
             extractor: { $0.triggerCandidate.weatherBarometricPressure },
-            lowString: "barometric pressure was under",
-            highString: "barometric pressure was over"
+            lowString: "air pressure was under",
+            highString: "air pressure was over"
         ),
         TestableVariable(
             id: "activityLevel",
             displayName: "activity level",
             unit: "",
             extractor: { $0.triggerCandidate.activityLevel?.numericValue },
-            lowString: "your activity level was low",
-            highString: "your activity level was high"
+            lowString: "you were mostly resting",
+            highString: "you were super active"
         ),
         TestableVariable(
             id: "hkSleep",
-            displayName: "HealthKit sleep duration",
+            displayName: "HealthKit sleep time",
             unit: "hours",
             extractor: { $0.healthKitPull.sleepDuration },
-            lowString: "HealthKit recorded under",
-            highString: "HealthKit recorded over"
+            lowString: "Apple Health said you slept under",
+            highString: "Apple Health said you slept over"
         ),
         TestableVariable(
             id: "hkSteps",
-            displayName: "HealthKit step count",
+            displayName: "HealthKit steps",
             unit: "steps",
             extractor: { $0.healthKitPull.stepCount.map(Double.init) },
-            lowString: "HealthKit steps were under",
-            highString: "HealthKit steps were over"
+            lowString: "Apple Health steps were under",
+            highString: "Apple Health steps were over"
         ),
         TestableVariable(
             id: "hkHR",
-            displayName: "average heart rate",
+            displayName: "avg heart rate",
             unit: "bpm",
             extractor: { $0.healthKitPull.heartRateAverage },
             lowString: "your average heart rate was under",
@@ -133,18 +133,18 @@ public struct CorrelationEngine {
         ),
         TestableVariable(
             id: "hkHRV",
-            displayName: "average HRV",
+            displayName: "avg heart rate variability (HRV)",
             unit: "ms",
             extractor: { $0.healthKitPull.heartRateVariabilityAverage },
-            lowString: "your average HRV was under",
-            highString: "your average HRV was over"
+            lowString: "your HRV was under",
+            highString: "your HRV was over"
         )
     ]
     
     public static let symptoms: [TestableVariable] = [
         TestableVariable(
             id: "lightheadedness",
-            displayName: "lightheadedness",
+            displayName: "dizziness",
             unit: "/10",
             extractor: { Double($0.symptoms.lightheadedness) },
             lowString: "",
@@ -152,7 +152,7 @@ public struct CorrelationEngine {
         ),
         TestableVariable(
             id: "tachycardiaSeverity",
-            displayName: "tachycardia severity",
+            displayName: "racing heart severity",
             unit: "/10",
             extractor: { Double($0.symptoms.tachycardiaSeverity) },
             lowString: "",
@@ -160,7 +160,7 @@ public struct CorrelationEngine {
         ),
         TestableVariable(
             id: "tachycardiaCount",
-            displayName: "tachycardia episode count",
+            displayName: "racing heart episodes",
             unit: "episodes",
             extractor: { Double($0.symptoms.tachycardiaCount) },
             lowString: "",
@@ -168,7 +168,7 @@ public struct CorrelationEngine {
         ),
         TestableVariable(
             id: "fatigue",
-            displayName: "fatigue",
+            displayName: "tiredness",
             unit: "/10",
             extractor: { Double($0.symptoms.fatigue) },
             lowString: "",
@@ -192,7 +192,7 @@ public struct CorrelationEngine {
         ),
         TestableVariable(
             id: "syncopeCount",
-            displayName: "syncope count",
+            displayName: "fainting episodes",
             unit: "episodes",
             extractor: { Double($0.symptoms.syncopeCount) },
             lowString: "",
@@ -350,13 +350,11 @@ public struct CorrelationEngine {
         if trigger.id == "medication" {
             // Binary variable logic
             if r > 0 {
-                // Positive correlation: taking medication is associated with higher symptoms (unlikely, but statistic-driven)
                 targetGroup = pairedPoints.filter { $0.0 >= 0.5 }
-                conditionPhrase = "you took medication on time"
+                conditionPhrase = "you took your meds on time"
             } else {
-                // Negative correlation: missing medication is associated with higher symptoms (expected)
                 targetGroup = pairedPoints.filter { $0.0 < 0.5 }
-                conditionPhrase = "you missed medication"
+                conditionPhrase = "you missed your meds"
             }
         } else {
             // Continuous/ordinal variables
@@ -387,6 +385,6 @@ public struct CorrelationEngine {
         
         let symptomName = symptom.displayName
         
-        return "On days \(conditionPhrase), your \(symptomName) severity was higher in \(k) of \(total) entries. Log more days to confirm this pattern."
+        return "On days when \(conditionPhrase), your \(symptomName) was worse in \(k) out of \(total) logs. Keep tracking to see if this pattern holds up!"
     }
 }

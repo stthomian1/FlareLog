@@ -50,7 +50,7 @@ public struct SymptomEntry: Codable, Equatable {
 public struct TriggerCandidate: Codable, Equatable {
     public var foodNotes: String?
     public var sleepHours: Double?
-    public var hydrationLiters: Double?
+    public var hydrationOunces: Double?
     public var standingTimeMinutes: Int?
     public var medicationTakenOnTime: Bool?
     public var menstrualCycleDay: Int?
@@ -60,7 +60,7 @@ public struct TriggerCandidate: Codable, Equatable {
     public init(
         foodNotes: String? = nil,
         sleepHours: Double? = nil,
-        hydrationLiters: Double? = nil,
+        hydrationOunces: Double? = nil,
         standingTimeMinutes: Int? = nil,
         medicationTakenOnTime: Bool? = nil,
         menstrualCycleDay: Int? = nil,
@@ -69,7 +69,7 @@ public struct TriggerCandidate: Codable, Equatable {
     ) {
         self.foodNotes = foodNotes
         self.sleepHours = sleepHours
-        self.hydrationLiters = hydrationLiters
+        self.hydrationOunces = hydrationOunces
         self.standingTimeMinutes = standingTimeMinutes
         self.medicationTakenOnTime = medicationTakenOnTime
         self.menstrualCycleDay = menstrualCycleDay

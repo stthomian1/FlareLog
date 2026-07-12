@@ -21,7 +21,7 @@ public final class SDDailyLog {
     // Trigger Candidates
     public var triggerFoodNotes: String?
     public var triggerSleepHours: Double?
-    public var triggerHydrationLiters: Double?
+    public var triggerHydrationOunces: Double?
     public var triggerStandingTimeMinutes: Int?
     public var triggerMedicationTakenOnTime: Bool?
     public var triggerMenstrualCycleDay: Int?
@@ -62,7 +62,7 @@ public final class SDDailyLog {
         // Triggers
         self.triggerFoodNotes = triggerCandidate.foodNotes
         self.triggerSleepHours = triggerCandidate.sleepHours
-        self.triggerHydrationLiters = triggerCandidate.hydrationLiters
+        self.triggerHydrationOunces = triggerCandidate.hydrationOunces
         self.triggerStandingTimeMinutes = triggerCandidate.standingTimeMinutes
         self.triggerMedicationTakenOnTime = triggerCandidate.medicationTakenOnTime
         self.triggerMenstrualCycleDay = triggerCandidate.menstrualCycleDay
@@ -94,7 +94,7 @@ public final class SDDailyLog {
         let trigger = TriggerCandidate(
             foodNotes: triggerFoodNotes,
             sleepHours: triggerSleepHours,
-            hydrationLiters: triggerHydrationLiters,
+            hydrationOunces: triggerHydrationOunces,
             standingTimeMinutes: triggerStandingTimeMinutes,
             medicationTakenOnTime: triggerMedicationTakenOnTime,
             menstrualCycleDay: triggerMenstrualCycleDay,
@@ -136,7 +136,7 @@ public final class SDDailyLog {
         
         self.triggerFoodNotes = log.triggerCandidate.foodNotes
         self.triggerSleepHours = log.triggerCandidate.sleepHours
-        self.triggerHydrationLiters = log.triggerCandidate.hydrationLiters
+        self.triggerHydrationOunces = log.triggerCandidate.hydrationOunces
         self.triggerStandingTimeMinutes = log.triggerCandidate.standingTimeMinutes
         self.triggerMedicationTakenOnTime = log.triggerCandidate.medicationTakenOnTime
         self.triggerMenstrualCycleDay = log.triggerCandidate.menstrualCycleDay

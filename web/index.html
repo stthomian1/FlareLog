@@ -59,14 +59,14 @@
                         <span class="stat-icon cyan-tint">🧠</span>
                         <div class="stat-info">
                             <span class="stat-val" id="stat-lighthead">0.0</span>
-                            <span class="stat-label">Avg Lighthead</span>
+                            <span class="stat-label">Avg Dizziness</span>
                         </div>
                     </div>
                     <div class="stat-card">
                         <span class="stat-icon blue-tint">💧</span>
                         <div class="stat-info">
-                            <span class="stat-val" id="stat-hydration">0.0L</span>
-                            <span class="stat-label">Avg Hydration</span>
+                            <span class="stat-val" id="stat-hydration">0 oz</span>
+                            <span class="stat-label">Avg Water Intake</span>
                         </div>
                     </div>
                 </div>
@@ -108,18 +108,21 @@
 
                     <!-- Symptoms Card -->
                     <div class="form-card">
-                        <h3>Symptom Severity (0 to 10)</h3>
+                        <h3 class="flex-row-between">
+                            How bad are your symptoms? (0 to 10)
+                            <button type="button" class="btn-help-trigger" data-help="symptoms" style="background:none; border:none; color:var(--color-teal, #20b2aa); font-size:1.2rem; cursor:pointer;">ⓘ</button>
+                        </h3>
                         
                         <div class="slider-group">
                             <div class="slider-header">
-                                <label for="input-lightheadedness">Lightheadedness</label>
+                                <label for="input-lightheadedness">Dizziness / Lightheadedness</label>
                                 <span class="slider-badge" id="val-lightheadedness">0/10</span>
                             </div>
                             <input type="range" id="input-lightheadedness" min="0" max="10" value="0" class="range-slider">
                         </div>
 
                         <div class="stepper-group">
-                            <label for="input-tachy-count">Tachycardia Episodes</label>
+                            <label for="input-tachy-count">Racing Heart Episodes (Tachycardia)</label>
                             <div class="stepper-control">
                                 <button type="button" class="btn-step" data-id="input-tachy-count" data-val="-1">-</button>
                                 <input type="number" id="input-tachy-count" min="0" value="0" readonly>
@@ -129,7 +132,7 @@
 
                         <div class="slider-group hidden" id="group-tachy-sev">
                             <div class="slider-header">
-                                <label for="input-tachy-severity">Tachycardia Severity</label>
+                                <label for="input-tachy-severity">Racing Heart Severity</label>
                                 <span class="slider-badge" id="val-tachy-severity">0/10</span>
                             </div>
                             <input type="range" id="input-tachy-severity" min="0" max="10" value="0" class="range-slider">
@@ -137,7 +140,7 @@
 
                         <div class="slider-group">
                             <div class="slider-header">
-                                <label for="input-fatigue">Fatigue</label>
+                                <label for="input-fatigue">Fatigue (Extreme Tiredness)</label>
                                 <span class="slider-badge" id="val-fatigue">0/10</span>
                             </div>
                             <input type="range" id="input-fatigue" min="0" max="10" value="0" class="range-slider">
@@ -145,7 +148,7 @@
 
                         <div class="slider-group">
                             <div class="slider-header">
-                                <label for="input-brainfog">Brain Fog</label>
+                                <label for="input-brainfog">Brain Fog (Fuzzy Thinking)</label>
                                 <span class="slider-badge" id="val-brainfog">0/10</span>
                             </div>
                             <input type="range" id="input-brainfog" min="0" max="10" value="0" class="range-slider">
@@ -153,14 +156,14 @@
 
                         <div class="slider-group">
                             <div class="slider-header">
-                                <label for="input-nausea">Nausea</label>
+                                <label for="input-nausea">Nausea (Sick to Stomach)</label>
                                 <span class="slider-badge" id="val-nausea">0/10</span>
                             </div>
                             <input type="range" id="input-nausea" min="0" max="10" value="0" class="range-slider">
                         </div>
 
                         <div class="toggle-group">
-                            <label for="input-syncope">Syncope / Near-Syncope</label>
+                            <label for="input-syncope">Fainting / Passing Out (Syncope)</label>
                             <label class="switch">
                                 <input type="checkbox" id="input-syncope">
                                 <span class="switch-slider"></span>
@@ -168,7 +171,7 @@
                         </div>
 
                         <div class="stepper-group hidden" id="group-syncope-count">
-                            <label for="input-syncope-count">Syncope Episodes</label>
+                            <label for="input-syncope-count">Fainting times</label>
                             <div class="stepper-control">
                                 <button type="button" class="btn-step" data-id="input-syncope-count" data-val="-1">-</button>
                                 <input type="number" id="input-syncope-count" min="1" value="1" readonly>
@@ -179,10 +182,13 @@
 
                     <!-- Habits Card -->
                     <div class="form-card">
-                        <h3>Daily Habits & Triggers</h3>
+                        <h3 class="flex-row-between">
+                            Daily Habits & Triggers (What you did)
+                            <button type="button" class="btn-help-trigger" data-help="habits" style="background:none; border:none; color:var(--color-teal, #20b2aa); font-size:1.2rem; cursor:pointer;">ⓘ</button>
+                        </h3>
 
                         <div class="stepper-group">
-                            <label for="input-sleep">Sleep Duration</label>
+                            <label for="input-sleep">Sleep Time</label>
                             <div class="stepper-control">
                                 <button type="button" class="btn-step" data-id="input-sleep" data-val="-0.5">-</button>
                                 <input type="number" id="input-sleep" min="0" max="24" step="0.5" value="7.0" readonly>
@@ -192,17 +198,17 @@
                         </div>
 
                         <div class="stepper-group">
-                            <label for="input-hydration">Hydration</label>
+                            <label for="input-hydration">Water Intake</label>
                             <div class="stepper-control">
-                                <button type="button" class="btn-step" data-id="input-hydration" data-val="-0.25">-</button>
-                                <input type="number" id="input-hydration" min="0" max="10" step="0.25" value="1.5" readonly>
-                                <span class="step-unit">L</span>
-                                <button type="button" class="btn-step" data-id="input-hydration" data-val="0.25">+</button>
+                                <button type="button" class="btn-step" data-id="input-hydration" data-val="-8">-</button>
+                                <input type="number" id="input-hydration" min="0" max="300" step="8" value="64" readonly>
+                                <span class="step-unit">oz</span>
+                                <button type="button" class="btn-step" data-id="input-hydration" data-val="8">+</button>
                             </div>
                         </div>
 
                         <div class="stepper-group">
-                            <label for="input-standing">Total Standing Time</label>
+                            <label for="input-standing">Time Spent Standing</label>
                             <div class="stepper-control">
                                 <button type="button" class="btn-step" data-id="input-standing" data-val="-5">-</button>
                                 <input type="number" id="input-standing" min="0" step="5" value="20" readonly>
@@ -212,7 +218,7 @@
                         </div>
 
                         <div class="toggle-group">
-                            <label for="input-medication">Medication Taken On-Time</label>
+                            <label for="input-medication">Meds Taken On Time</label>
                             <label class="switch">
                                 <input type="checkbox" id="input-medication" checked>
                                 <span class="switch-slider"></span>
@@ -220,7 +226,7 @@
                         </div>
 
                         <div class="select-group">
-                            <label for="input-activity">Activity Level</label>
+                            <label for="input-activity">How active were you?</label>
                             <select id="input-activity">
                                 <option value="rest">Rest</option>
                                 <option value="light" selected>Light</option>
@@ -230,7 +236,7 @@
                         </div>
 
                         <div class="toggle-group">
-                            <label for="input-menstrual-enable">Track Menstrual Cycle Day</label>
+                            <label for="input-menstrual-enable">Track Period Cycle Day</label>
                             <label class="switch">
                                 <input type="checkbox" id="input-menstrual-enable">
                                 <span class="switch-slider"></span>
@@ -238,7 +244,7 @@
                         </div>
 
                         <div class="stepper-group hidden" id="group-menstrual-day">
-                            <label for="input-menstrual-day">Cycle Day</label>
+                            <label for="input-menstrual-day">Period Cycle Day</label>
                             <div class="stepper-control">
                                 <button type="button" class="btn-step" data-id="input-menstrual-day" data-val="-1">-</button>
                                 <input type="number" id="input-menstrual-day" min="1" max="40" value="1" readonly>
@@ -247,7 +253,7 @@
                         </div>
 
                         <div class="input-field-group">
-                            <label for="input-pressure">Barometric Pressure</label>
+                            <label for="input-pressure">Barometric Pressure (Air Pressure)</label>
                             <div class="input-unit-wrapper">
                                 <input type="number" id="input-pressure" placeholder="1013">
                                 <span class="field-unit">hPa</span>
@@ -255,15 +261,15 @@
                         </div>
 
                         <div class="input-field-group">
-                            <label for="input-food">Food / Diet Notes</label>
-                            <input type="text" id="input-food" placeholder="Egg salad, salt tablets, etc.">
+                            <label for="input-food">Food & Drink Notes (like salt, carbs)</label>
+                            <input type="text" id="input-food" placeholder="Chips, salty foods, heavy lunch, etc.">
                         </div>
                     </div>
 
                     <!-- General Notes Card -->
                     <div class="form-card">
-                        <h3>Journal Notes</h3>
-                        <textarea id="input-notes" placeholder="Describe anything not covered above (e.g. weather changes, stress levels)..." rows="4"></textarea>
+                        <h3>Extra Notes</h3>
+                        <textarea id="input-notes" placeholder="Write anything else here (like stress, school, weird weather)..." rows="4"></textarea>
                     </div>
 
                     <!-- Submit Button -->
@@ -275,7 +281,7 @@
             <section id="view-patterns" class="app-view">
                 <!-- Data Gate Banner (logs < 14) -->
                 <div id="patterns-threshold-gate" class="threshold-gate">
-                    <h3>Gathering Tracking History</h3>
+                    <h3>Collecting Logs</h3>
                     <div class="progress-circle-wrapper">
                         <svg class="progress-circle-svg" viewBox="0 0 100 100">
                             <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
@@ -286,19 +292,19 @@
                             <span class="progress-max">of 14 days</span>
                         </div>
                     </div>
-                    <p class="gate-desc">Patterns can be shown after 14 days of data.</p>
-                    <p class="gate-subtext">FlareLog uses a rigorous multiple-comparisons correction to adjust statistical significance thresholds, preventing misleading correlations before enough data is collected.</p>
+                    <p class="gate-desc">We can find patterns after you track for 14 days.</p>
+                    <p class="gate-subtext">We use safe statistical math to check if patterns are real. This stops us from showing false patterns before we have enough data.</p>
                 </div>
 
                 <!-- Paywall Lock (premium locked) -->
                 <div id="patterns-paywall-gate" class="paywall-gate hidden">
                     <span class="lock-icon">🔒</span>
                     <h3>Unlock Pattern Analysis</h3>
-                    <p class="gate-desc">Surface statistical associations between your sleep, hydration, activity, and symptoms using our Benjamini-Hochberg corrected correlation engine.</p>
+                    <p class="gate-desc">Find connections between your sleep, water intake, activity, and symptoms using our smart pattern finder.</p>
                     <div class="premium-benefits">
-                        <div>✓ Identify symptom patterns and habits</div>
-                        <div>✓ Verify with robust FDR statistics</div>
-                        <div>✓ Export locally-generated PDF reports</div>
+                        <div>✓ Spot patterns between habits and symptoms</div>
+                        <div>✓ Make sure patterns are real using smart math</div>
+                        <div>✓ Save and share PDF reports</div>
                     </div>
                     <button class="btn-paywall-upgrade" id="btn-paywall-upgrade-plans">View Subscription Plans</button>
                 </div>
@@ -326,7 +332,7 @@
                         <div class="chart-container">
                             <canvas id="correlation-chart"></canvas>
                         </div>
-                        <p class="chart-desc">Each point represents one log entry. This visual chart demonstrates the statistical distribution of the two variables.</p>
+                        <p class="chart-desc">Each dot is one log entry. This chart shows how your habits and symptoms relate.</p>
                     </div>
                 </div>
             </section>
@@ -352,7 +358,7 @@
 
                     <!-- HealthKit settings -->
                     <div class="settings-section">
-                        <h4>HealthKit passive tracking</h4>
+                        <h4>Apple Health Sync</h4>
                         <div class="settings-row">
                             <div class="row-info">
                                 <strong>Health Data Access</strong>
@@ -364,14 +370,18 @@
 
                     <!-- Legal Notice -->
                     <div class="settings-section">
-                        <h4>Legal & Regulatory</h4>
+                        <h4>Safety & Support</h4>
+                        <div class="settings-row link-row" id="settings-btn-show-help">
+                            <strong>View Help Guide & Definitions</strong>
+                            <span class="chevron">›</span>
+                        </div>
                         <div class="settings-row link-row" id="btn-show-disclaimer">
-                            <strong>View Medical Disclaimer</strong>
+                            <strong>View Safety Warning</strong>
                             <span class="chevron">›</span>
                         </div>
                         <div class="settings-card info-card">
-                            <strong>Scope Limitation Notice</strong>
-                            <p>FlareLog is an observational wellness tracking journal. It does not diagnose, treat, or manage POTS or any other chronic condition. It does not issue clinical directives, recommend activity limits, or make medication alterations. Use strictly as personal tracking reference.</p>
+                            <strong>App Limits Warning</strong>
+                            <p>FlareLog is a daily journal to track how you feel. It doesn't diagnose, treat, or manage POTS or any other illness. It doesn't give medical orders, set activity limits, or change your meds. Use it only as a personal reference.</p>
                         </div>
                     </div>
 
@@ -392,7 +402,7 @@
                             <button class="btn-dev-action" id="dev-btn-generate-logs">
                                 Generate 20 Days of Synthetic Logs
                             </button>
-                            <p class="dev-note">Seeds 20 daily logs containing planted correlations (e.g. low sleep hours correlates with high lightheadedness) to test stats and charts immediately.</p>
+                             <p class="dev-note">Seeds 20 daily logs containing planted correlations (like less sleep makes you more dizzy) to test stats and charts immediately.</p>
                         </div>
                         <div class="settings-row flex-col-row">
                             <button class="btn-dev-action danger" id="dev-btn-clear-logs">
@@ -422,28 +432,86 @@
         </footer>
     </div>
 
-    <!-- 1. MANDATORY MEDICAL DISCLAIMER BLOCKER MODAL -->
+    <!-- 1. MANDATORY SAFETY WARNING MODAL -->
     <div id="disclaimer-modal" class="modal-overlay">
         <div class="modal-card">
             <span class="modal-logo-icon">🛡️</span>
-            <h2>Medical Disclaimer</h2>
+            <h2>Safety Warning & Agreement</h2>
             <div class="modal-body scrollable">
-                <p><strong>Please read this disclaimer carefully before using FlareLog.</strong></p>
+                <p><strong>Please read this safety warning carefully before using FlareLog.</strong></p>
                 <hr>
                 <div class="disclaimer-bullet">
-                    <strong class="warning-text">▲ Not a Medical Device</strong>
-                    <p>FlareLog is a personal wellness tracking journal. It is not a diagnostic tool, does not suggest medication changes or treatment plans, does not recommend activity limits, and is not a medical device.</p>
+                    <strong class="warning-text">▲ This App is Not a Doctor</strong>
+                    <p>FlareLog is just a personal daily journal to track how you feel. It cannot tell you what medical condition you have, tell you to change your meds or treatments, suggest limits on what you do, or act like a medical device.</p>
                 </div>
                 <div class="disclaimer-bullet">
-                    <strong class="warning-text">▲ Personal Reference Only</strong>
-                    <p>All content, statistics, and observations generated in this app are derived mathematically from data you enter. They are for informational purposes only, to help you identify statistical patterns in your own journal records.</p>
+                    <strong class="warning-text">▲ For Your Own Info Only</strong>
+                    <p>All the charts, stats, and patterns you see in this app are just math based on what you type in. They are only meant to help you spot trends in your own daily logs.</p>
                 </div>
                 <div class="disclaimer-bullet">
-                    <strong class="warning-text">▲ Consult Your Doctor</strong>
-                    <p>This app is not a substitute for clinical advice. You should always discuss your symptoms, logs, and any statistical findings with a qualified physician or doctor. Never disregard or delay seeking medical help due to information tracked in this app.</p>
+                    <strong class="warning-text">▲ Always Talk to Your Doctor</strong>
+                    <p>This app does not replace a real doctor. You should always talk about your symptoms, logs, and what you find in the app with your doctor or physician. Never ignore or delay getting medical help because of what you see here.</p>
                 </div>
             </div>
             <button class="btn-accept-disclaimer" id="btn-accept-disclaimer">I Understand & Agree</button>
+        </div>
+    </div>
+
+    <!-- 3. HELP GUIDE MODAL -->
+    <div id="help-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button class="btn-close-modal" id="btn-close-help">×</button>
+            <span class="modal-logo-icon">ⓘ</span>
+            <h2>Help & Terms</h2>
+            <div class="modal-body scrollable">
+                <h3>What is POTS?</h3>
+                <p>POTS (Postural Orthostatic Tachycardia Syndrome) is a way of saying your body has a hard time adjusting when you stand up. Your heart rate jumps, making you dizzy or super tired. Tracking your daily habits helps you learn what triggers a flare-up so you can feel better!</p>
+                <hr>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Dizziness / Lightheadedness</strong>
+                    <p>That woozy, spinning feeling you get when standing up or sitting for too long.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Racing Heart (Tachycardia)</strong>
+                    <p>When your heart beats super fast or pounds heavily in your chest, even though you are just standing or resting.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Tiredness (Fatigue)</strong>
+                    <p>Feeling completely out of energy, even if you slept well.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Brain Fog</strong>
+                    <p>When your head feels cloudy or fuzzy. It makes it hard to focus, think, or remember things.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Nausea</strong>
+                    <p>Feeling sick to your stomach, like you might throw up.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Fainting (Syncope)</strong>
+                    <p>Actually passing out or feeling like you were just about to collapse.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Water Intake (Hydration)</strong>
+                    <p>Drinking plenty of fluids helps keep your blood volume up, stopping your heart from racing. We track this in ounces (oz) now. US doctors often recommend 64 to 100+ oz a day for POTS!</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Sleep Time</strong>
+                    <p>How many hours of sleep you got. Lack of sleep is a common trigger for POTS flare-ups.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Time Spent Standing</strong>
+                    <p>Total minutes you spent standing up. Standing puts stress on your body, so keeping track of it helps you find your limits.</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Air Pressure (Barometer)</strong>
+                    <p>Weather changes can drop air pressure and make POTS symptoms worse!</p>
+                </div>
+                <div class="disclaimer-bullet">
+                    <strong class="warning-text">Period Cycle Day</strong>
+                    <p>Hormone drops during your period can trigger POTS flares. Log which day of your cycle you're on to spot links.</p>
+                </div>
+            </div>
         </div>
     </div>
 
