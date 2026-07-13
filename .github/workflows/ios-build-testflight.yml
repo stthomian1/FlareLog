@@ -15,9 +15,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Xcode Version
-        run: sudo xcode-select -s /Applications/Xcode_15.2.app
-
       - name: Install Apple Certificate and Provisioning Profile
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
@@ -30,9 +27,9 @@ jobs:
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-          # Decode certificate and provisioning profile from secrets
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+          # Decode certificate and provisioning profile from secrets using Python to prevent OS-specific base64 issues
+          python3 -c "import base64, os; open('$CERTIFICATE_PATH', 'wb').write(base64.b64decode(os.environ['BUILD_CERTIFICATE_BASE64']))"
+          python3 -c "import base64, os; open('$PP_PATH', 'wb').write(base64.b64decode(os.environ['BUILD_PROVISION_PROFILE_BASE64']))"
 
           # Create a temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
@@ -105,7 +102,7 @@ jobs:
         run: |
           # Write API Key file
           mkdir -p ~/.appstoreconnect/private_keys
-          echo -n "$API_KEY_BASE64" | base64 --decode -o ~/.appstoreconnect/private_keys/AuthKey_$API_KEY_ID.p8
+          python3 -c "import base64, os; open(os.path.expanduser('~/.appstoreconnect/private_keys/AuthKey_' + os.environ['API_KEY_ID'] + '.p8'), 'wb').write(base64.b64decode(os.environ['API_KEY_BASE64']))"
           
           # Validate then upload app
           xcrun altool --validate-app \
