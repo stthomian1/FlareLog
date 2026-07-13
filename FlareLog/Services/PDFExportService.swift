@@ -7,8 +7,8 @@ public final class PDFExportService {
     
     public static func generatePDF(logs: [DailyLog], patterns: [CorrelationResult]) -> Data {
         let pdfMetadata = [
-            kCGPDFKeyAuthor: "FlareLog App",
-            kCGPDFKeySubject: "POTS Wellness Pattern Analysis"
+            kCGPDFContextAuthor: "FlareLog App",
+            kCGPDFContextSubject: "POTS Wellness Pattern Analysis"
         ] as [CFString: Any]
         
         let format = UIGraphicsPDFRendererFormat()

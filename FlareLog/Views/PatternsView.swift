@@ -140,7 +140,6 @@ public struct PatternsView: View {
                                 .cornerRadius(10)
                                 .padding(.horizontal, 16)
                             }
-                            }
                         }
                         
                         // Detail Chart Card for Selected Correlation

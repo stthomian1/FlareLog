@@ -249,4 +249,3 @@ public struct SettingsView: View {
         try? modelContext.save()
     }
 }
-}
