@@ -6,10 +6,10 @@ import FlareLogCore
 public final class PDFExportService {
     
     public static func generatePDF(logs: [DailyLog], patterns: [CorrelationResult]) -> Data {
-        let pdfMetadata = [
-            kCGPDFContextAuthor: "FlareLog App",
-            kCGPDFContextSubject: "POTS Wellness Pattern Analysis"
-        ] as [CFString: Any]
+        let pdfMetadata: [String: Any] = [
+            kCGPDFContextAuthor as String: "FlareLog App",
+            kCGPDFContextSubject as String: "POTS Wellness Pattern Analysis"
+        ]
         
         let format = UIGraphicsPDFRendererFormat()
         format.documentInfo = pdfMetadata
