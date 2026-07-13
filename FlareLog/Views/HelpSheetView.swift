@@ -52,26 +52,7 @@ public struct HelpSheetView: View {
                                 .stroke(Color.teal.opacity(0.2), lineWidth: 1)
                         )
                         .padding(.horizontal, 16)
-                        
-                        // Privacy Explainer
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("🔒 100% Private & Local")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.teal)
-                            
-                            Text("Every single piece of information you enter into FlareLog remains completely private. All your logs are stored safely right on your own local device. None of your logs, habits, or data is stored in the cloud or sent to any server.")
-                                .font(.system(size: 13))
-                                .foregroundColor(.white.opacity(0.85))
-                                .lineSpacing(4)
-                        }
-                        .padding(.all, 14)
-                        .background(Color.white.opacity(0.03))
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.teal.opacity(0.2), lineWidth: 1)
-                        )
-                        .padding(.horizontal, 16)
+
                         
                         // Terms Section
                         VStack(alignment: .leading, spacing: 14) {

@@ -27,7 +27,7 @@ public final class PDFExportService {
             let contentWidth = pageBounds.width - (margin * 2)
             
             // Header Color Tint Bar
-            context.cgContext.setFillColor(UIColor.systemTeal.withAlphaComponent(0.1).cgColor)
+            context.cgContext.setFillColor(UIColor(red: 0.0, green: 0.5, blue: 0.5, alpha: 0.08).cgColor)
             context.cgContext.fill(CGRect(x: margin, y: currentY, width: contentWidth, height: 60))
             
             // Title
@@ -35,7 +35,7 @@ public final class PDFExportService {
             let titleFont = UIFont.boldSystemFont(ofSize: 20)
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: titleFont,
-                .foregroundColor: UIColor.systemTeal
+                .foregroundColor: UIColor(red: 0.0, green: 0.45, blue: 0.45, alpha: 1.0)
             ]
             title.draw(at: CGPoint(x: margin + 12, y: currentY + 12), withAttributes: titleAttributes)
             
@@ -44,7 +44,7 @@ public final class PDFExportService {
             let subFont = UIFont.systemFont(ofSize: 10)
             let subAttributes: [NSAttributedString.Key: Any] = [
                 .font: subFont,
-                .foregroundColor: UIColor.secondaryLabel
+                .foregroundColor: UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
             ]
             sub.draw(at: CGPoint(x: margin + 12, y: currentY + 36), withAttributes: subAttributes)
             currentY += 80
@@ -54,12 +54,12 @@ public final class PDFExportService {
             let disclaimerText = "This report is a personal daily journal to track how you feel. FlareLog is not a doctor, doesn't diagnose illness, recommend treatments, or set limits. Use it to help you talk to your doctor. Always talk to a real physician for medical advice."
             
             let cardRect = CGRect(x: margin, y: currentY, width: contentWidth, height: 75)
-            context.cgContext.setFillColor(UIColor.secondarySystemBackground.cgColor)
+            context.cgContext.setFillColor(UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1.0).cgColor)
             context.cgContext.addRect(cardRect)
             context.cgContext.fillPath()
             
             // Left border accent line
-            context.cgContext.setStrokeColor(UIColor.systemOrange.cgColor)
+            context.cgContext.setStrokeColor(UIColor(red: 0.9, green: 0.45, blue: 0.0, alpha: 1.0).cgColor)
             context.cgContext.setLineWidth(3)
             context.cgContext.move(to: CGPoint(x: margin, y: currentY))
             context.cgContext.addLine(to: CGPoint(x: margin, y: currentY + 75))
@@ -69,14 +69,14 @@ public final class PDFExportService {
                 in: cardRect.inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 5, right: 12)),
                 withAttributes: [
                     .font: UIFont.boldSystemFont(ofSize: 8.5),
-                    .foregroundColor: UIColor.systemOrange
+                    .foregroundColor: UIColor(red: 0.9, green: 0.45, blue: 0.0, alpha: 1.0)
                 ]
             )
             disclaimerText.draw(
                 in: cardRect.inset(by: UIEdgeInsets(top: 22, left: 12, bottom: 5, right: 12)),
                 withAttributes: [
                     .font: UIFont.systemFont(ofSize: 8),
-                    .foregroundColor: UIColor.label
+                    .foregroundColor: UIColor.black
                 ]
             )
             
@@ -86,7 +86,7 @@ public final class PDFExportService {
             let sectionTitle = "Surfaced Statistical Patterns"
             sectionTitle.draw(at: CGPoint(x: margin, y: currentY), withAttributes: [
                 .font: UIFont.boldSystemFont(ofSize: 14),
-                .foregroundColor: UIColor.label
+                .foregroundColor: UIColor.black
             ])
             currentY += 22
             
@@ -95,7 +95,7 @@ public final class PDFExportService {
                 let noPatterns = "No statistically significant patterns were observed in the data yet (requires 14+ logged days and adjusted significance thresholds). Continue logging to analyze your habits."
                 let noPatternsAttr: [NSAttributedString.Key: Any] = [
                     .font: UIFont.italicSystemFont(ofSize: 10),
-                    .foregroundColor: UIColor.secondaryLabel
+                    .foregroundColor: UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
                 ]
                 noPatterns.draw(in: CGRect(x: margin, y: currentY, width: contentWidth, height: 45), withAttributes: noPatternsAttr)
                 currentY += 45
@@ -106,12 +106,12 @@ public final class PDFExportService {
                     let textRect = CGRect(x: margin, y: currentY, width: contentWidth, height: 35)
                     
                     // Draw card background for patterns
-                    context.cgContext.setFillColor(UIColor.systemGray6.withAlphaComponent(0.5).cgColor)
+                    context.cgContext.setFillColor(UIColor(red: 0.95, green: 0.97, blue: 0.97, alpha: 1.0).cgColor)
                     context.cgContext.fill(CGRect(x: margin, y: currentY - 2, width: contentWidth, height: 30))
                     
                     text.draw(in: textRect.insetBy(dx: 6, dy: 4), withAttributes: [
                         .font: textFont,
-                        .foregroundColor: UIColor.label
+                        .foregroundColor: UIColor.black
                     ])
                     currentY += 34
                     
@@ -133,7 +133,7 @@ public final class PDFExportService {
             let journalTitle = "Recent Tracking Records (Up to 14 days)"
             journalTitle.draw(at: CGPoint(x: margin, y: currentY), withAttributes: [
                 .font: UIFont.boldSystemFont(ofSize: 14),
-                .foregroundColor: UIColor.label
+                .foregroundColor: UIColor.black
             ])
             currentY += 20
             
@@ -142,7 +142,7 @@ public final class PDFExportService {
             let headers = ["Date", "Symptom Severities", "Habits / Triggers", "Journal Notes"]
             
             // Header Fill
-            context.cgContext.setFillColor(UIColor.systemTeal.withAlphaComponent(0.2).cgColor)
+            context.cgContext.setFillColor(UIColor(red: 0.0, green: 0.5, blue: 0.5, alpha: 0.12).cgColor)
             context.cgContext.fill(CGRect(x: margin, y: currentY, width: contentWidth, height: 20))
             
             var currentX = margin
@@ -151,7 +151,7 @@ public final class PDFExportService {
                     in: CGRect(x: currentX + 6, y: currentY + 4, width: colWidths[i] - 12, height: 14),
                     withAttributes: [
                         .font: UIFont.boldSystemFont(ofSize: 8.5),
-                        .foregroundColor: UIColor.label
+                        .foregroundColor: UIColor.black
                     ]
                 )
                 currentX += colWidths[i]
@@ -167,14 +167,14 @@ public final class PDFExportService {
                     currentY = 40
                     
                     // Draw header again on new page
-                    context.cgContext.setFillColor(UIColor.systemTeal.withAlphaComponent(0.2).cgColor)
+                    context.cgContext.setFillColor(UIColor(red: 0.0, green: 0.5, blue: 0.5, alpha: 0.12).cgColor)
                     context.cgContext.fill(CGRect(x: margin, y: currentY, width: contentWidth, height: 20))
                     
                     currentX = margin
                     for i in 0..<headers.count {
                         headers[i].draw(
                             in: CGRect(x: currentX + 6, y: currentY + 4, width: colWidths[i] - 12, height: 14),
-                            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 8.5), .foregroundColor: UIColor.label]
+                            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 8.5), .foregroundColor: UIColor.black]
                         )
                         currentX += colWidths[i]
                     }
@@ -220,9 +220,9 @@ public final class PDFExportService {
                 
                 // Draw background tint for rows
                 if index % 2 == 0 {
-                    context.cgContext.setFillColor(UIColor.systemBackground.cgColor)
+                    context.cgContext.setFillColor(UIColor.white.cgColor)
                 } else {
-                    context.cgContext.setFillColor(UIColor.secondarySystemBackground.withAlphaComponent(0.4).cgColor)
+                    context.cgContext.setFillColor(UIColor(red: 0.97, green: 0.98, blue: 0.98, alpha: 1.0).cgColor)
                 }
                 context.cgContext.fill(CGRect(x: margin, y: currentY, width: contentWidth, height: rowHeight))
                 
@@ -233,14 +233,14 @@ public final class PDFExportService {
                         in: CGRect(x: currentX + 6, y: currentY + 4, width: colWidths[i] - 12, height: rowHeight - 8),
                         withAttributes: [
                             .font: UIFont.systemFont(ofSize: 7.5),
-                            .foregroundColor: UIColor.label
+                            .foregroundColor: UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
                         ]
                     )
                     currentX += colWidths[i]
                 }
                 
                 // Draw separator
-                context.cgContext.setStrokeColor(UIColor.separator.cgColor)
+                context.cgContext.setStrokeColor(UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0).cgColor)
                 context.cgContext.setLineWidth(0.5)
                 context.cgContext.move(to: CGPoint(x: margin, y: currentY + rowHeight))
                 context.cgContext.addLine(to: CGPoint(x: pageBounds.width - margin, y: currentY + rowHeight))

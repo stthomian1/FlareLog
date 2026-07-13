@@ -124,6 +124,17 @@ public struct SettingsView: View {
                             .lineSpacing(2)
                     }
                     .padding(.vertical, 4)
+                    
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("🔒 100% Private & Local Data")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(.white.opacity(0.8))
+                        Text("Every single piece of information you enter into FlareLog remains completely private. All your logs are stored safely right on your own local device. None of your logs, habits, or data is stored in the cloud or sent to any server.")
+                            .font(.system(size: 10))
+                            .foregroundColor(.white.opacity(0.45))
+                            .lineSpacing(2)
+                    }
+                    .padding(.vertical, 4)
                 }
                 .listRowBackground(Color(red: 0.12, green: 0.17, blue: 0.28).opacity(0.6))
                 
