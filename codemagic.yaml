@@ -1,0 +1,59 @@
+# Codemagic CI/CD configuration for native iOS FlareLog App
+workflows:
+  ios-release:
+    name: iOS Release to TestFlight
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    
+    # Environment variables configured in the Codemagic Web UI
+    environment:
+      groups:
+        - app_store_credentials # Store your Apple Team ID, Provisioning Profile UUID, etc. here
+      vars:
+        XCODE_PROJECT: "FlareLog.xcodeproj"
+        XCODE_SCHEME: "FlareLog"
+        BUNDLE_ID: "com.stthomian1.FlareLog"
+      xcode: latest
+      
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+
+    scripts:
+      - name: Set up keychain and certificates
+        script: |
+          keychain initialize
+          
+          # Decode the distribution certificate and provisioning profile from UI environment variables
+          echo "$BUILD_CERTIFICATE_BASE64" | base64 --decode > /tmp/certificate.p12
+          echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode > /tmp/profile.mobileprovision
+          
+          # Add certificate to keychain
+          keychain add-certificates --certificates /tmp/certificate.p12 --certificate-password "$P12_PASSWORD"
+          
+          # Copy provisioning profile to local profiles folder
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/$PROVISIONING_PROFILE_UUID.mobileprovision
+
+      - name: Build and Export iOS App
+        script: |
+          # Use Codemagic's built-in xcode-project CLI tool to build the .ipa
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --archive-flags="ALLOW_PROVISIONING_DEVICE_REGISTRATION=NO"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      
+    publishing:
+      # Automatically uploads the artifact (.ipa) to TestFlight using App Store Connect Integration
+      app_store_connect:
+        # Use App Store Connect API Key integration configured in Codemagic UI
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - "External Testers"
