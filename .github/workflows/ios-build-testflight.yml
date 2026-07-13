@@ -16,7 +16,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Select Xcode 26
-        run: sudo xcode-select -s /Applications/Xcode_26.app && xcodebuild -version
+        run: |
+          echo "=== Available Xcode versions ==="
+          ls /Applications/ | grep -i xcode
+          echo ""
+          # Pick the highest versioned Xcode that starts with 26
+          XCODE_PATH=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)
+          echo "Selected: $XCODE_PATH"
+          sudo xcode-select -s "$XCODE_PATH"
+          xcodebuild -version
 
       - name: Install Apple Certificate and Provisioning Profile
         env:
