@@ -9,21 +9,21 @@ on:
 jobs:
   build:
     name: Build & Upload to TestFlight
-    runs-on: macos-26
+    runs-on: macos-latest
     
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Select Xcode 26
+      - name: Select Xcode
         run: |
           echo "=== Available Xcode versions ==="
-          ls /Applications/ | grep -i xcode
-          echo ""
-          # Pick the highest versioned Xcode that starts with 26
+          ls /Applications/ | grep -i xcode || true
           XCODE_PATH=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)
-          echo "Selected: $XCODE_PATH"
-          sudo xcode-select -s "$XCODE_PATH"
+          if [ -n "$XCODE_PATH" ]; then
+            echo "Selected: $XCODE_PATH"
+            sudo xcode-select -s "$XCODE_PATH"
+          fi
           xcodebuild -version
 
       - name: Set Build Number
