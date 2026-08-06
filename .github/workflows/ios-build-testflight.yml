@@ -58,6 +58,9 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
           echo "APPLE_TEAM_ID=$TEAM_ID" >> $GITHUB_ENV
 
+          # Export KEYCHAIN_PATH to GITHUB_ENV
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> $GITHUB_ENV
+
           # Create a temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security default-keychain -s $KEYCHAIN_PATH
@@ -67,7 +70,7 @@ jobs:
           # Import the certificate into the keychain
           security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security list-keychain -d user -s $KEYCHAIN_PATH
+          security list-keychains -d user -s $KEYCHAIN_PATH $(security list-keychains -d user | tr -d '"')
 
           # Apply provisioning profile to local profiles folder
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
@@ -86,6 +89,7 @@ jobs:
             PROVISIONING_PROFILE="$PROVISIONING_PROFILE_UUID" \
             PROVISIONING_PROFILE_SPECIFIER="$PROVISIONING_PROFILE_NAME" \
             CODE_SIGN_IDENTITY="Apple Distribution" \
+            CODE_SIGN_KEYCHAIN="$KEYCHAIN_PATH" \
             PRODUCT_BUNDLE_IDENTIFIER="com.stthomian1.FlareLog" \
             ALLOW_PROVISIONING_DEVICE_REGISTRATION=NO
 
