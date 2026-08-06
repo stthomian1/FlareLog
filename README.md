@@ -62,3 +62,30 @@ To make testing easy, both versions include a **Developer Tools** section in Set
 For questions, issues, or help using FlareLog, please contact: geraldbryanjr@gmail.com
 
 You can also open an issue in this repository.
+
+
+---
+
+## 🔒 Privacy Policy
+
+_Last updated: August 2026_
+
+FlareLog is designed to be private by default.
+
+**Data collection and storage**
+FlareLog does not require an account or login. All symptom logs, journal entries, and habit data you enter are stored locally on your device only. FlareLog does not operate a server or cloud backend, and your personal tracking data is never transmitted to or stored by us.
+
+**HealthKit**
+If you choose to connect Apple HealthKit, FlareLog reads relevant health metrics (such as heart rate) with your explicit permission, solely to display alongside your own logs on your device. This data is never uploaded, shared, or sold.
+
+**Optional weather data**
+FlareLog may optionally fetch local weather conditions to help you spot patterns between weather and symptoms. This request only includes an approximate location needed for the lookup and is not linked to your identity or stored on any server we control.
+
+**No ads, analytics, or third-party tracking**
+FlareLog does not include advertising, third-party analytics, or tracking SDKs, and does not sell or share your data with third parties.
+
+**Your control over your data**
+Because all data stays on your device, you can delete your data at any time by deleting entries in the app or uninstalling the app.
+
+**Contact**
+If you have questions about this privacy policy, contact geraldbryanjr@gmail.com.
