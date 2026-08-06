@@ -52,7 +52,9 @@ jobs:
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c 'Print :Name' /dev/stdin <<< $(security cms -D -i $PP_PATH))
           TEAM_ID=$(/usr/libexec/PlistBuddy -c 'Print :TeamIdentifier:0' /dev/stdin <<< $(security cms -D -i $PP_PATH))
           echo "PROVISIONING_PROFILE_UUID=$PROFILE_UUID" >> $GITHUB_ENV
-          echo "PROVISIONING_PROFILE_NAME=$PROFILE_NAME" >> $GITHUB_ENV
+          echo "PROVISIONING_PROFILE_NAME<<EOF" >> $GITHUB_ENV
+          echo "$PROFILE_NAME" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
           echo "APPLE_TEAM_ID=$TEAM_ID" >> $GITHUB_ENV
 
           # Create a temporary keychain
