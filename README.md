@@ -53,3 +53,12 @@ To make testing easy, both versions include a **Developer Tools** section in Set
 - **Mock Premium Status:** Toggle subscription locks on/off to bypass StoreKit blocks.
 - **Generate 20 Days of Synthetic Logs:** Instantly populates 20 daily entries seeded with realistic, correlated tracking values (e.g., low sleep hours strongly correlated with high lightheadedness severity).
 - **Reset Logs:** Wipes local database logs to test empty states.
+
+
+---
+
+## 📬 Support
+
+For questions, issues, or help using FlareLog, please contact: geraldbryanjr@gmail.com
+
+You can also open an issue in this repository.
