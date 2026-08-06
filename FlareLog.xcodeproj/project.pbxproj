@@ -18,8 +18,6 @@
 		D37F00092A5E0B0900000009 /* PatternsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37F10092A5E0B0900000009 /* PatternsView.swift */; };
 		D37F000A2A5E0B0A0000000A /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37F100A2A5E0B0A0000000A /* PaywallView.swift */; };
 		D37F000B2A5E0B0B0000000B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37F100B2A5E0B0B0000000B /* SettingsView.swift */; };
-		D37F000E2A5E0B0E0000000E /* HelpSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37F100E2A5E0B0E0000000E /* HelpSheetView.swift */; };
-		D37F000F2A5E0B0F0000000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D37F100F2A5E0B0F0000000F /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,10 +32,8 @@
 		D37F10092A5E0B0900000009 /* PatternsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PatternsView.swift; path = FlareLog/Views/PatternsView.swift; sourceTree = "<group>"; };
 		D37F100A2A5E0B0A0000000A /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaywallView.swift; path = FlareLog/Views/PaywallView.swift; sourceTree = "<group>"; };
 		D37F100B2A5E0B0B0000000B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = FlareLog/Views/SettingsView.swift; sourceTree = "<group>"; };
-		D37F100E2A5E0B0E0000000E /* HelpSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HelpSheetView.swift; path = FlareLog/Views/HelpSheetView.swift; sourceTree = "<group>"; };
 		D37F100C2A5E0B0C0000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = FlareLog/Info.plist; sourceTree = "<group>"; };
 		D37F100D2A5E0B0D0000000D /* FlareLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FlareLog.entitlements; path = FlareLog/FlareLog.entitlements; sourceTree = "<group>"; };
-		D37F100F2A5E0B0F0000000F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = FlareLog/Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +95,6 @@
 				D37F10092A5E0B0900000009 /* PatternsView.swift */,
 				D37F100A2A5E0B0A0000000A /* PaywallView.swift */,
 				D37F100B2A5E0B0B0000000B /* SettingsView.swift */,
-				D37F100E2A5E0B0E0000000E /* HelpSheetView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -175,7 +170,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D37F000F2A5E0B0F0000000F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,7 +191,6 @@
 				D37F00092A5E0B0900000009 /* PatternsView.swift in Sources */,
 				D37F000A2A5E0B0A0000000A /* PaywallView.swift in Sources */,
 				D37F000B2A5E0B0B0000000B /* SettingsView.swift in Sources */,
-				D37F000E2A5E0B0E0000000E /* HelpSheetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,17 +204,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FlareLog/FlareLog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = FlareLog/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.stthomian1.FlareLog;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tony.FlareLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -237,17 +230,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FlareLog/FlareLog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = FlareLog/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.stthomian1.FlareLog;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tony.FlareLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -8,7 +8,17 @@ public final class SubscriptionManager: ObservableObject {
     @Published public var purchaseError: String? = nil
     @Published public var isPurchasing: Bool = false
     
-    public static let premiumSubscriptionID = "com.flarelog.premium.monthly"
+    public static let monthlyProductID = "com.stthomian1.FlareLog.premium.monthly"
+    public static let annualProductID = "com.stthomian1.FlareLog.premium.annual"
+    public static let allProductIDs: Set<String> = [monthlyProductID, annualProductID]
+    
+    public var monthlyProduct: Product? {
+        availableProducts.first(where: { $0.id == Self.monthlyProductID })
+    }
+    
+    public var annualProduct: Product? {
+        availableProducts.first(where: { $0.id == Self.annualProductID })
+    }
     
     private var transactionListener: Task<Void, Error>? = nil
     
@@ -32,7 +42,7 @@ public final class SubscriptionManager: ObservableObject {
     
     public func fetchProducts() async {
         do {
-            let products = try await Product.products(for: [Self.premiumSubscriptionID])
+            let products = try await Product.products(for: Self.allProductIDs)
             self.availableProducts = products
         } catch {
             self.purchaseError = "Failed to load StoreKit products: \(error.localizedDescription)"
@@ -47,7 +57,7 @@ public final class SubscriptionManager: ObservableObject {
                 continue
             }
             
-            if transaction.productID == Self.premiumSubscriptionID {
+            if Self.allProductIDs.contains(transaction.productID) {
                 if transaction.revocationDate == nil {
                     // Check expiration if available
                     if let expirationDate = transaction.expirationDate {
@@ -70,13 +80,15 @@ public final class SubscriptionManager: ObservableObject {
         }
     }
     
-    public func buySubscription() async -> Bool {
+    public func buySubscription(product: Product? = nil, productID: String? = nil) async -> Bool {
         self.isPurchasing = true
         self.purchaseError = nil
         
-        // If products array is empty, treat as local sandbox debug mode (mock purchase)
-        guard let premiumProduct = availableProducts.first(where: { $0.id == Self.premiumSubscriptionID }) else {
-            // Enable mock state for development
+        // Find target product from parameter or productID string
+        let targetProduct = product ?? availableProducts.first(where: { $0.id == (productID ?? Self.monthlyProductID) })
+        
+        guard let productToBuy = targetProduct else {
+            // If products array is empty (e.g. local debug without StoreKit setup), enable mock state
             self.isPremium = true
             UserDefaults.standard.set(true, forKey: "isPremiumDebugMock")
             self.isPurchasing = false
@@ -84,7 +96,7 @@ public final class SubscriptionManager: ObservableObject {
         }
         
         do {
-            let result = try await premiumProduct.purchase()
+            let result = try await productToBuy.purchase()
             switch result {
             case .success(let verification):
                 switch verification {

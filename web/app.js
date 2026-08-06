@@ -342,6 +342,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Plan Selection Cards
+    const planAnnual = document.getElementById("plan-annual");
+    const planMonthly = document.getElementById("plan-monthly");
+
+    if (planAnnual && planMonthly) {
+        planAnnual.addEventListener("click", () => {
+            planAnnual.classList.add("active");
+            planMonthly.classList.remove("active");
+        });
+        planMonthly.addEventListener("click", () => {
+            planMonthly.classList.add("active");
+            planAnnual.classList.remove("active");
+        });
+    }
+
     btnPaywallUpgradePlans.addEventListener("click", () => togglePaywall(true));
     settingsBtnUpgrade.addEventListener("click", () => togglePaywall(true));
     btnClosePaywall.addEventListener("click", () => togglePaywall(false));
@@ -365,13 +380,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Dev settings premium toggle
-    devPremiumToggle.addEventListener("change", () => {
-        isPremium = devPremiumToggle.checked;
-        localStorage.setItem("flarelog_premium", isPremium ? "true" : "false");
-        updatePremiumVisuals();
-        renderSettings();
-        renderPatterns();
-    });
+    if (devPremiumToggle) {
+        devPremiumToggle.addEventListener("change", () => {
+            isPremium = devPremiumToggle.checked;
+            localStorage.setItem("flarelog_premium", isPremium ? "true" : "false");
+            updatePremiumVisuals();
+            renderSettings();
+            renderPatterns();
+        });
+    }
 
     // --- FORM RESET & EDIT LOOPS ---
     function resetForm() {
@@ -924,7 +941,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    function checkDevToolsVisibility() {
+        const isDev = window.location.hostname === "localhost" ||
+                      window.location.hostname === "127.0.0.1" ||
+                      window.location.search.includes("dev=true");
+        const devToolsSection = document.getElementById("dev-tools-section");
+        if (devToolsSection) {
+            devToolsSection.style.display = isDev ? "block" : "none";
+        }
+    }
+
     // --- ON STARTUP BOOT ---
+    checkDevToolsVisibility();
     checkDisclaimer();
     updatePremiumVisuals();
     renderDashboard();

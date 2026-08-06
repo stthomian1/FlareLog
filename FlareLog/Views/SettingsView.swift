@@ -11,6 +11,7 @@ public struct SettingsView: View {
     @State private var showPaywall: Bool = false
     @State private var showHelpGuide: Bool = false
     @State private var isGeneratingMockData: Bool = false
+    @State private var showDevSyntheticConfirmation: Bool = false
     
     public init() {}
     
@@ -138,7 +139,8 @@ public struct SettingsView: View {
                 }
                 .listRowBackground(Color(red: 0.12, green: 0.17, blue: 0.28).opacity(0.6))
                 
-                // Developer / Testing Tools Section
+                // Developer / Testing Tools Section (Debug Build Only)
+                #if DEBUG
                 Section(header: Text("Developer Tools").foregroundColor(.orange)) {
                     Toggle("Mock Premium Status", isOn: Binding(
                         get: { subscriptionManager.isPremium },
@@ -148,9 +150,7 @@ public struct SettingsView: View {
                     .foregroundColor(.white)
                     
                     Button(action: {
-                        isGeneratingMockData = true
-                        generateSyntheticLogs()
-                        isGeneratingMockData = false
+                        showDevSyntheticConfirmation = true
                     }) {
                         HStack {
                             if isGeneratingMockData {
@@ -165,12 +165,23 @@ public struct SettingsView: View {
                         .foregroundColor(.orange)
                     }
                     .disabled(isGeneratingMockData)
+                    .alert("Generate Synthetic Logs?", isPresented: $showDevSyntheticConfirmation) {
+                        Button("Generate", role: .destructive) {
+                            isGeneratingMockData = true
+                            generateSyntheticLogs()
+                            isGeneratingMockData = false
+                        }
+                        Button("Cancel", role: .cancel) {}
+                    } message: {
+                        Text("This will insert or overwrite 20 days of test logs in your database.")
+                    }
                     
                     Text("Unlock Premium features to test math patterns, charts, and PDF exports. The test data puts in patterns on purpose (like less sleep makes you more dizzy) to test the app.")
                         .font(.system(size: 10))
                         .foregroundColor(.white.opacity(0.4))
                 }
                 .listRowBackground(Color(red: 0.12, green: 0.17, blue: 0.28).opacity(0.6))
+                #endif
             }
             .scrollContentBackground(.hidden)
             .background(Color.clear)

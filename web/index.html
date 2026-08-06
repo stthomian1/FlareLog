@@ -392,8 +392,8 @@
                         </div>
                     </div>
 
-                    <!-- Developer Tools -->
-                    <div class="settings-section dev-section">
+                    <!-- Developer Tools (Hidden in Production) -->
+                    <div class="settings-section dev-section" id="dev-tools-section" style="display: none;">
                         <h4>Developer Tools</h4>
                         <div class="settings-row">
                             <div class="row-info">
@@ -589,11 +589,24 @@
                 </div>
             </div>
 
-            <div class="paywall-plan">
-                <strong>Monthly Access</strong>
-                <span class="plan-price">$6.99 / month</span>
-                <p class="plan-note">Auto-renews. Cancel anytime in App Store settings.</p>
+            <div class="paywall-plans-container">
+                <div class="paywall-plan-card active" id="plan-annual">
+                    <div class="plan-header-row">
+                        <strong>Annual Access</strong>
+                        <span class="plan-badge">SAVE 50%</span>
+                    </div>
+                    <span class="plan-price">$29.99 / yr</span>
+                    <p class="plan-note">~$2.50 / month</p>
+                </div>
+                <div class="paywall-plan-card" id="plan-monthly">
+                    <div class="plan-header-row">
+                        <strong>Monthly Access</strong>
+                    </div>
+                    <span class="plan-price">$4.99 / mo</span>
+                    <p class="plan-note">Flexible billing</p>
+                </div>
             </div>
+            <p class="plan-note" style="margin-top: 8px;">Auto-renews. Cancel anytime in App Store settings.</p>
 
             <button class="btn-subscribe" id="btn-subscribe">Subscribe Now</button>
             <button class="btn-restore" id="btn-restore">Restore Purchases</button>
