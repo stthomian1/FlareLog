@@ -198,6 +198,8 @@ public struct SettingsView: View {
         }
     }
     
+    #if DEBUG
+    @available(iOS 17.0, *)
     private func generateSyntheticLogs() {
         // Generate 20 days of synthetic data
         for i in 0..<20 {
@@ -270,4 +272,5 @@ public struct SettingsView: View {
         
         try? modelContext.save()
     }
+    #endif
 }
