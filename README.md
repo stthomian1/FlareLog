@@ -11,10 +11,10 @@ FlareLog is a premium, mobile-first wellness journaling app designed specificall
 
 ## 📱 Dual-Architecture Overview
 
-To accommodate different testing environments, FlareLog has been built with a dual-architecture:
+FlareLog's codebase retains a dual-architecture:
 
-1. **Responsive Web PWA (`web/`):** A standalone, client-side Progressive Web App (HTML5, CSS3, ES6 JavaScript) that runs in any mobile or desktop browser. Includes mock HealthKit data syncs, local storage database persistence, **Chart.js** correlation graphs, and **jsPDF** report downloads.
-2. **Native iOS App (`FlareLog/` & `FlareLogCore/`):** A native SwiftUI iOS 16+ application utilizing **SwiftData** storage (encrypted at rest), Apple **HealthKit**, **PDFKit**, and **StoreKit 2** subscription billing.
+1. **Responsive Web PWA (`web/`):** A standalone, client-side Progressive Web App (HTML5, CSS3, ES6 JavaScript) originally built for early remote testing. The source remains in this repository, but it is no longer publicly hosted or deployed. Includes mock HealthKit data syncs, local storage database persistence, **Chart.js** correlation graphs, and **jsPDF** report downloads.
+2. **Native iOS App (`FlareLog/` & `FlareLogCore/`):** A native SwiftUI iOS 16+ application utilizing **SwiftData** storage (encrypted at rest), Apple **HealthKit**, **PDFKit**, and **StoreKit 2** subscription billing. This is the actively distributed version of FlareLog.
 
 ---
 
