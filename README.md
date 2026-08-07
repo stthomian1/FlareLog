@@ -34,13 +34,7 @@ Both the Web PWA and native iOS codebases share the same statistical calculation
 
 ## 🚀 How to Run and Deploy
 
-### Option A: The Web App / PWA (Easiest for Remote Testing)
-The web app is deployed and hosted on GitHub Pages. Testers can visit:
-👉 **[https://stthomian1.github.io/FlareLog/web/](https://stthomian1.github.io/FlareLog/web/)**
-
-* **Install to Phone:** Open the link in Safari on an iPhone, tap **Share**, and select **Add to Home Screen** to run it full-screen without browser UI frames.
-
-### Option B: Build the Native iOS App (Xcode)
+### Build the Native iOS App (Xcode)
 1. Open the `FlareLog.xcodeproj` project folder in **Xcode 15+** on a compatible Mac.
 2. Select an iOS 17+ Simulator or a physical test device.
 3. Build and Run (**Cmd + R**).
