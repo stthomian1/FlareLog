@@ -41,7 +41,7 @@ The web app is deployed and hosted on GitHub Pages. Testers can visit:
 * **Install to Phone:** Open the link in Safari on an iPhone, tap **Share**, and select **Add to Home Screen** to run it full-screen without browser UI frames.
 
 ### Option B: Build the Native iOS App (Xcode)
-1. Open the [FlareLog.xcodeproj](file:///Users/Tony/Library/CloudStorage/GoogleDrive-stthomian1@gmail.com/My%20Drive/FlareLog/FlareLog.xcodeproj) project folder in **Xcode 15+** on a compatible Mac.
+1. Open the `FlareLog.xcodeproj` project folder in **Xcode 15+** on a compatible Mac.
 2. Select an iOS 17+ Simulator or a physical test device.
 3. Build and Run (**Cmd + R**).
 
