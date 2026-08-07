@@ -943,9 +943,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function checkDevToolsVisibility() {
         const isDev = window.location.hostname === "localhost" ||
-                      window.location.hostname === "127.0.0.1" ||
-                      window.location.search.includes("dev=true");
-        const devToolsSection = document.getElementById("dev-tools-section");
+                      window.location.hostname === "127.0.0.1";
+         const devToolsSection = document.getElementById("dev-tools-section");
         if (devToolsSection) {
             devToolsSection.style.display = isDev ? "block" : "none";
         }
