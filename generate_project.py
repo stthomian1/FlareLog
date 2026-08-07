@@ -28,6 +28,7 @@ def create_xcodeproj():
 		D37F000A2A5E0B0A0000000A /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37F100A2A5E0B0A0000000A /* PaywallView.swift */; };
 		D37F000B2A5E0B0B0000000B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37F100B2A5E0B0B0000000B /* SettingsView.swift */; };
 		D37F000E2A5E0B0E0000000E /* HelpSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37F100E2A5E0B0E0000000E /* HelpSheetView.swift */; };
+		D37F000F2A5E0B0F0000000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D37F100F2A5E0B0F0000000F /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@ def create_xcodeproj():
 		D37F100E2A5E0B0E0000000E /* HelpSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HelpSheetView.swift; path = FlareLog/Views/HelpSheetView.swift; sourceTree = "<group>"; };
 		D37F100C2A5E0B0C0000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = FlareLog/Info.plist; sourceTree = "<group>"; };
 		D37F100D2A5E0B0D0000000D /* FlareLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FlareLog.entitlements; path = FlareLog/FlareLog.entitlements; sourceTree = "<group>"; };
+		D37F100F2A5E0B0F0000000F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = FlareLog/Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@ def create_xcodeproj():
 				D37F30042A5E0B0100000001 /* Models */,
 				D37F30052A5E0B0100000001 /* Services */,
 				D37F30062A5E0B0100000001 /* Views */,
+				D37F100F2A5E0B0F0000000F /* Assets.xcassets */,
 				D37F100C2A5E0B0C0000000C /* Info.plist */,
 				D37F100D2A5E0B0D0000000D /* FlareLog.entitlements */,
 			);
@@ -182,6 +185,7 @@ def create_xcodeproj():
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D37F000F2A5E0B0F0000000F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
